@@ -385,330 +385,403 @@
 
 <script>
 
-const players = [
+  /*
+   * Google Apps Script Web App
+   * This provides player data from Google Sheets.
+   */
+  const DATA_URL =
+    "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
 
-  {
-    name: "Rinku Singh",
-    dob: "1997-10-12",
-    role: "Batter",
-    status: "current"
-  },
+  let players = [];
 
-  {
-    name: "Sunil Narine",
-    dob: "1988-05-26",
-    role: "All-Rounder",
-    status: "current"
-  },
 
-  {
-    name: "Tejasvi Singh",
-    dob: "2002-04-18",
-    role: "Wicket-Keeper",
-    status: "current"
-  },
+  /*
+   * Load players from Google Sheets
+   */
+  async function loadPlayers() {
 
-  {
-    name: "Kartik Tyagi",
-    dob: "2000-11-08",
-    role: "Bowler",
-    status: "current"
-  },
+    try {
 
-  {
-    name: "Vaibhav Arora",
-    dob: "1997-12-14",
-    role: "Bowler",
-    status: "current"
-  },
+      const response = await fetch(DATA_URL);
 
-  {
-    name: "Varun Chakaravarthy",
-    dob: "1991-08-29",
-    role: "Bowler",
-    status: "current"
-  },
+      if (!response.ok) {
+        throw new Error("Unable to load player data");
+      }
 
-  {
-    name: "Andre Russell",
-    dob: "1988-04-29",
-    role: "All-Rounder",
-    status: "former"
-  },
+      players = await response.json();
 
-  {
-    name: "Gautam Gambhir",
-    dob: "1981-10-14",
-    role: "Batter",
-    status: "former"
-  },
+      renderPlayers();
+      renderNextBirthday();
 
-  {
-    name: "Dinesh Karthik",
-    dob: "1985-06-01",
-    role: "Wicket-Keeper",
-    status: "former"
-  },
+    } catch (error) {
 
-  {
-    name: "Robin Uthappa",
-    dob: "1985-11-11",
-    role: "Wicket-Keeper",
-    status: "former"
-  },
+      console.error(
+        "Error loading KKR player data:",
+        error
+      );
 
-  {
-    name: "Brendon McCullum",
-    dob: "1981-09-27",
-    role: "Batter",
-    status: "former"
+      document.getElementById("playerGrid").innerHTML =
+        `<div class="empty">
+          Unable to load player data right now.
+        </div>`;
+
+      document.getElementById("nextPlayer").textContent =
+        "Unable to load";
+
+      document.getElementById("nextDate").textContent =
+        "Please try again later";
+
+      document.getElementById("countdown").textContent =
+        "Data unavailable";
+    }
   }
 
-];
+
+  /*
+   * Get player initials
+   */
+  function getInitials(name) {
+
+    return name
+      .split(" ")
+      .map(word => word[0])
+      .slice(0, 2)
+      .join("");
+
+  }
 
 
-function getInitials(name) {
+  /*
+   * Calculate next birthday
+   */
+  function getNextBirthday(dob) {
 
-  return name
-    .split(" ")
-    .map(word => word[0])
-    .slice(0, 2)
-    .join("");
+    const birthDate =
+      new Date(dob + "T00:00:00");
 
-}
+    const today = new Date();
+
+    const todayOnly =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+
+    let next =
+      new Date(
+        today.getFullYear(),
+        birthDate.getMonth(),
+        birthDate.getDate()
+      );
 
 
-function getNextBirthday(dob) {
+    if (next < todayOnly) {
 
-  const birthDate = new Date(dob + "T00:00:00");
+      next =
+        new Date(
+          today.getFullYear() + 1,
+          birthDate.getMonth(),
+          birthDate.getDate()
+        );
 
-  const today = new Date();
+    }
 
-  const todayOnly = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate()
-  );
 
-  let next = new Date(
-    today.getFullYear(),
-    birthDate.getMonth(),
-    birthDate.getDate()
-  );
+    const difference =
+      next.getTime() -
+      todayOnly.getTime();
 
-  if (next < todayOnly) {
 
-    next = new Date(
-      today.getFullYear() + 1,
-      birthDate.getMonth(),
-      birthDate.getDate()
+    const days =
+      Math.ceil(
+        difference /
+        (1000 * 60 * 60 * 24)
+      );
+
+
+    return {
+      date: next,
+      days: days
+    };
+
+  }
+
+
+  /*
+   * Format date
+   */
+  function formatDate(date) {
+
+    return date.toLocaleDateString(
+      "en-IN",
+      {
+        day: "numeric",
+        month: "long"
+      }
     );
 
   }
 
-  const difference =
-    next.getTime() - todayOnly.getTime();
 
-  const days =
-    Math.ceil(difference / (1000 * 60 * 60 * 24));
+  /*
+   * Display next birthday
+   */
+  function renderNextBirthday() {
 
-  return {
-    date: next,
-    days: days
-  };
+    const birthdays =
+      players
 
-}
+        .filter(player => player.dob)
+
+        .map(player => {
+
+          const next =
+            getNextBirthday(player.dob);
+
+          return {
+            ...player,
+            nextDate: next.date,
+            days: next.days
+          };
+
+        })
+
+        .sort(
+          (a, b) =>
+            a.nextDate - b.nextDate
+        );
 
 
-function formatDate(date) {
+    if (!birthdays.length) {
 
-  return date.toLocaleDateString(
-    "en-IN",
-    {
-      day: "numeric",
-      month: "long"
+      document.getElementById(
+        "nextPlayer"
+      ).textContent =
+        "No verified birthdays";
+
+      document.getElementById(
+        "nextDate"
+      ).textContent =
+        "Add birthdays in Google Sheets";
+
+      document.getElementById(
+        "countdown"
+      ).textContent =
+        "🎂";
+
+      return;
+
     }
-  );
-
-}
 
 
-function renderNextBirthday() {
-
-  const birthdays = players
-    .filter(player => player.dob)
-    .map(player => {
-
-      const next = getNextBirthday(player.dob);
-
-      return {
-        ...player,
-        nextDate: next.date,
-        days: next.days
-      };
-
-    })
-    .sort((a, b) => a.nextDate - b.nextDate);
+    const next =
+      birthdays[0];
 
 
-  if (!birthdays.length) {
+    document.getElementById(
+      "nextPlayer"
+    ).textContent =
+      next.name;
 
-    document.getElementById("nextPlayer").textContent =
-      "No verified birthdays";
 
-    return;
+    document.getElementById(
+      "nextDate"
+    ).textContent =
+      formatDate(next.nextDate);
+
+
+    document.getElementById(
+      "countdown"
+    ).textContent =
+
+      next.days === 0
+        ? "🎉 Today!"
+
+        : next.days === 1
+          ? "🎂 Tomorrow!"
+
+          : `${next.days} days to go`;
 
   }
 
 
-  const next = birthdays[0];
+  /*
+   * Display players
+   */
+  function renderPlayers() {
 
-  document.getElementById("nextPlayer").textContent =
-    next.name;
-
-  document.getElementById("nextDate").textContent =
-    formatDate(next.nextDate);
-
-  document.getElementById("countdown").textContent =
-    next.days === 0
-      ? "🎉 Today!"
-      : next.days === 1
-        ? "🎂 Tomorrow!"
-        : `${next.days} days to go`;
-
-}
+    const search =
+      document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
 
 
-function renderPlayers() {
-
-  const search =
-    document
-      .getElementById("search")
-      .value
-      .toLowerCase()
-      .trim();
-
-  const filter =
-    document.getElementById("filter").value;
+    const filter =
+      document
+        .getElementById("filter")
+        .value;
 
 
-  const filtered =
-    players.filter(player => {
+    const filtered =
+      players.filter(player => {
 
-      const matchesSearch =
-        player.name
-          .toLowerCase()
-          .includes(search);
-
-      const matchesFilter =
-        filter === "all" ||
-        player.status === filter;
-
-      return matchesSearch && matchesFilter;
-
-    });
+        const matchesSearch =
+          player.name
+            .toLowerCase()
+            .includes(search);
 
 
-  document.getElementById("playerCount").textContent =
-    `${filtered.length} players`;
+        const matchesFilter =
+          filter === "all" ||
+          String(player.status)
+            .toLowerCase() === filter;
 
 
-  const grid =
-    document.getElementById("playerGrid");
+        return (
+          matchesSearch &&
+          matchesFilter
+        );
+
+      });
 
 
-  if (!filtered.length) {
+    document.getElementById(
+      "playerCount"
+    ).textContent =
+      `${filtered.length} players`;
+
+
+    const grid =
+      document.getElementById(
+        "playerGrid"
+      );
+
+
+    if (!filtered.length) {
+
+      grid.innerHTML =
+        `<div class="empty">
+          No players found.
+        </div>`;
+
+      return;
+
+    }
+
 
     grid.innerHTML =
-      `<div class="empty">
-        No players found.
-      </div>`;
 
-    return;
+      filtered
+
+        .map(player => {
+
+          const birthday =
+            player.dob
+              ? new Date(
+                  player.dob +
+                  "T00:00:00"
+                )
+              : null;
+
+
+          const birthdayText =
+            birthday
+
+              ? `🎂 ${birthday.toLocaleDateString(
+                  "en-IN",
+                  {
+                    day: "numeric",
+                    month: "long"
+                  }
+                )}`
+
+              : "🎂 Birthday pending verification";
+
+
+          const status =
+            String(
+              player.status || ""
+            ).toLowerCase();
+
+
+          const statusText =
+            status === "current"
+              ? "Current KKR"
+              : "Former KKR";
+
+
+          return `
+
+            <article class="player">
+
+              <div class="avatar">
+                ${getInitials(player.name)}
+              </div>
+
+              <h3>
+                ${player.name}
+              </h3>
+
+              <div class="player-info">
+
+                🏏 ${player.role || "Player"}
+
+                <br>
+
+                ${birthdayText}
+
+                ${
+                  player.seasons
+                    ? `<br>📅 KKR: ${player.seasons}`
+                    : ""
+                }
+
+              </div>
+
+              <span class="tag">
+                ${statusText}
+              </span>
+
+            </article>
+
+          `;
+
+        })
+
+        .join("");
 
   }
 
 
-  grid.innerHTML =
-    filtered
-      .map(player => {
-
-        const birthday =
-          player.dob
-            ? new Date(player.dob + "T00:00:00")
-            : null;
-
-        const birthdayText =
-          birthday
-            ? `🎂 ${birthday.toLocaleDateString(
-                "en-IN",
-                {
-                  day: "numeric",
-                  month: "long"
-                }
-              )}`
-            : "🎂 Birthday pending verification";
+  /*
+   * Search
+   */
+  document
+    .getElementById("search")
+    .addEventListener(
+      "input",
+      renderPlayers
+    );
 
 
-        return `
-
-          <article class="player">
-
-            <div class="avatar">
-              ${getInitials(player.name)}
-            </div>
-
-            <h3>
-              ${player.name}
-            </h3>
-
-            <div class="player-info">
-
-              🏏 ${player.role}
-
-              <br>
-
-              ${birthdayText}
-
-            </div>
-
-            <span class="tag">
-              ${
-                player.status === "current"
-                  ? "Current KKR"
-                  : "Former KKR"
-              }
-            </span>
-
-          </article>
-
-        `;
-
-      })
-      .join("");
-
-}
+  /*
+   * Current / Former filter
+   */
+  document
+    .getElementById("filter")
+    .addEventListener(
+      "change",
+      renderPlayers
+    );
 
 
-document
-  .getElementById("search")
-  .addEventListener(
-    "input",
-    renderPlayers
-  );
-
-
-document
-  .getElementById("filter")
-  .addEventListener(
-    "change",
-    renderPlayers
-  );
-
-
-renderNextBirthday();
-
-renderPlayers();
+  /*
+   * Start loading data
+   */
+  loadPlayers();
 
 </script>
 
