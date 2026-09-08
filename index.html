@@ -329,6 +329,60 @@
   font-weight: 700;
 }
 
+.birthday-today {
+  max-width: 800px;
+  margin: 0 auto 30px;
+  padding: 22px 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(244, 208, 111, 0.65);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(107, 53, 153, 0.9),
+      rgba(244, 208, 111, 0.12)
+    );
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+}
+
+.birthday-today-icon {
+  font-size: 45px;
+}
+
+.birthday-today-label {
+  color: #f4d06f;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+}
+
+.birthday-today h2 {
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.birthday-today p {
+  color: #cfc6dc;
+  font-size: 13px;
+}
+
+@media (max-width: 520px) {
+  .birthday-today {
+    padding: 18px;
+  }
+
+  .birthday-today-icon {
+    font-size: 35px;
+  }
+
+  .birthday-today h2 {
+    font-size: 21px;
+  }
+}    
+
 @media (max-width: 900px) {
   .upcoming-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -401,8 +455,25 @@
       Kolkata Knight Riders players. 💜💛🏏
     </p>
   </section>
+  
+  <section id="birthdayToday" class="birthday-today" style="display:none;">
 
+  <div class="birthday-today-icon">🎉</div>
 
+  <div>
+    <div class="birthday-today-label">
+      BIRTHDAY TODAY
+    </div>
+
+    <h2 id="birthdayTodayName"></h2>
+
+    <p>
+      Wishing our Knight a very Happy Birthday! 💜💛🏏
+    </p>
+  </div>
+
+</section>
+  
   <section id="birthdays" class="birthday-card">
 
     <div class="label">
@@ -504,6 +575,7 @@
       renderPlayers();
       renderNextBirthday();
       renderUpcomingBirthdays();
+      renderBirthdayToday();
 
     } catch (error) {
 
@@ -697,6 +769,57 @@
 
   }
 
+  function renderBirthdayToday() {
+
+  const banner =
+    document.getElementById("birthdayToday");
+
+  const nameElement =
+    document.getElementById("birthdayTodayName");
+
+  if (!banner || !nameElement) return;
+
+  const today = new Date();
+
+  const todayMonth =
+    today.getMonth();
+
+  const todayDay =
+    today.getDate();
+
+  const birthdayPlayers =
+    players.filter(player => {
+
+      if (!player.dob) return false;
+
+      const dob =
+        new Date(player.dob + "T00:00:00");
+
+      return (
+        dob.getMonth() === todayMonth &&
+        dob.getDate() === todayDay
+      );
+
+    });
+
+
+  if (!birthdayPlayers.length) {
+
+    banner.style.display = "none";
+
+    return;
+  }
+
+
+  nameElement.textContent =
+    birthdayPlayers
+      .map(player => player.name)
+      .join(" & ");
+
+
+  banner.style.display = "flex";
+}
+  
   function renderUpcomingBirthdays() {
 
   const container =
