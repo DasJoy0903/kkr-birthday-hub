@@ -105,7 +105,7 @@
 
     .birthday-card {
       max-width: 650px;
-      margin: 0 auto 45px;
+      margin: 0 auto 30px;
       padding: 30px;
       text-align: center;
       border-radius: 24px;
@@ -143,6 +143,46 @@
       background: #f4d06f;
       color: #251039;
       font-weight: 800;
+    }
+
+    .birthday-today {
+      max-width: 800px;
+      margin: 0 auto 30px;
+      padding: 22px 25px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(244, 208, 111, 0.65);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(107, 53, 153, 0.9),
+          rgba(244, 208, 111, 0.12)
+        );
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .birthday-today-icon {
+      font-size: 45px;
+    }
+
+    .birthday-today-label {
+      color: #f4d06f;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .birthday-today h2 {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .birthday-today p {
+      color: #cfc6dc;
+      font-size: 13px;
     }
 
     .controls {
@@ -184,6 +224,143 @@
       font-size: 27px;
     }
 
+    .upcoming-section {
+      margin-bottom: 45px;
+    }
+
+    .upcoming-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    .upcoming-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(244, 208, 111, 0.18);
+      transition: 0.2s ease;
+    }
+
+    .upcoming-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(244, 208, 111, 0.55);
+    }
+
+    .upcoming-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      background: linear-gradient(145deg, #6b3599, #261039);
+      border: 2px solid #f4d06f;
+      color: #f4d06f;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .upcoming-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .upcoming-card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .upcoming-date {
+      color: #cfc6dc;
+      font-size: 12px;
+    }
+
+    .upcoming-countdown {
+      margin-top: 9px;
+      color: #f4d06f;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Calendar */
+
+    .calendar-section {
+      margin-bottom: 45px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .month-card {
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .month-card h3 {
+      color: #f4d06f;
+      font-size: 19px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(244, 208, 111, 0.18);
+    }
+
+    .calendar-player {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .calendar-player:last-child {
+      border-bottom: none;
+    }
+
+    .calendar-avatar {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #6b3599, #261039);
+      border: 1px solid #f4d06f;
+      color: #f4d06f;
+      font-size: 12px;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .calendar-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .calendar-player-info {
+      flex: 1;
+    }
+
+    .calendar-player-name {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .calendar-player-date {
+      color: #aaa0b5;
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
     .player-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -218,7 +395,7 @@
       font-weight: 800;
       overflow: hidden;
     }
-    
+
     .avatar img {
       width: 100%;
       height: 100%;
@@ -247,12 +424,6 @@
       color: #f4d06f;
     }
 
-    .birthday {
-      margin-top: 10px;
-      color: #ffffff;
-      font-size: 13px;
-    }
-
     .empty {
       padding: 30px;
       text-align: center;
@@ -268,132 +439,15 @@
       font-size: 12px;
     }
 
-    .upcoming-section {
-  margin-bottom: 45px;
-}
+    @media (max-width: 900px) {
+      .upcoming-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
 
-.upcoming-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
-}
-
-.upcoming-card {
-  padding: 18px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(244, 208, 111, 0.18);
-  transition: 0.2s ease;
-}
-
-.upcoming-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(244, 208, 111, 0.55);
-}
-
-.upcoming-avatar {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  background: linear-gradient(145deg, #6b3599, #261039);
-  border: 2px solid #f4d06f;
-  color: #f4d06f;
-  font-weight: 800;
-  overflow: hidden;
-}
-
-.upcoming-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.upcoming-card h3 {
-  font-size: 15px;
-  margin-bottom: 6px;
-}
-
-.upcoming-date {
-  color: #cfc6dc;
-  font-size: 12px;
-}
-
-.upcoming-countdown {
-  margin-top: 9px;
-  color: #f4d06f;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.birthday-today {
-  max-width: 800px;
-  margin: 0 auto 30px;
-  padding: 22px 25px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  border-radius: 20px;
-  border: 1px solid rgba(244, 208, 111, 0.65);
-  background:
-    linear-gradient(
-      135deg,
-      rgba(107, 53, 153, 0.9),
-      rgba(244, 208, 111, 0.12)
-    );
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
-}
-
-.birthday-today-icon {
-  font-size: 45px;
-}
-
-.birthday-today-label {
-  color: #f4d06f;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  margin-bottom: 5px;
-}
-
-.birthday-today h2 {
-  font-size: 25px;
-  margin-bottom: 5px;
-}
-
-.birthday-today p {
-  color: #cfc6dc;
-  font-size: 13px;
-}
-
-@media (max-width: 520px) {
-  .birthday-today {
-    padding: 18px;
-  }
-
-  .birthday-today-icon {
-    font-size: 35px;
-  }
-
-  .birthday-today h2 {
-    font-size: 21px;
-  }
-}    
-
-@media (max-width: 900px) {
-  .upcoming-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 520px) {
-  .upcoming-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+      .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
 
     @media (max-width: 800px) {
       .player-grid {
@@ -418,8 +472,28 @@
         grid-template-columns: 1fr;
       }
 
+      .upcoming-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .calendar-grid {
+        grid-template-columns: 1fr;
+      }
+
       .birthday-card {
         padding: 24px 18px;
+      }
+
+      .birthday-today {
+        padding: 18px;
+      }
+
+      .birthday-today-icon {
+        font-size: 35px;
+      }
+
+      .birthday-today h2 {
+        font-size: 21px;
       }
     }
   </style>
@@ -434,6 +508,8 @@
     <div>
       <a href="#home">Home</a>
       <a href="#birthdays">Birthdays</a>
+      <a href="#upcoming">Upcoming</a>
+      <a href="#calendar">Calendar</a>
       <a href="#players">Players</a>
     </div>
   </nav>
@@ -455,25 +531,39 @@
       Kolkata Knight Riders players. 💜💛🏏
     </p>
   </section>
-  
-  <section id="birthdayToday" class="birthday-today" style="display:none;">
 
-  <div class="birthday-today-icon">🎉</div>
 
-  <div>
-    <div class="birthday-today-label">
-      BIRTHDAY TODAY
+  <!-- Birthday Today -->
+
+  <section
+    id="birthdayToday"
+    class="birthday-today"
+    style="display:none;"
+  >
+
+    <div class="birthday-today-icon">
+      🎉
     </div>
 
-    <h2 id="birthdayTodayName"></h2>
+    <div>
 
-    <p>
-      Wishing our Knight a very Happy Birthday! 💜💛🏏
-    </p>
-  </div>
+      <div class="birthday-today-label">
+        BIRTHDAY TODAY
+      </div>
 
-</section>
-  
+      <h2 id="birthdayTodayName"></h2>
+
+      <p>
+        Wishing our Knight a very Happy Birthday! 💜💛🏏
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- Next Birthday -->
+
   <section id="birthdays" class="birthday-card">
 
     <div class="label">
@@ -495,6 +585,8 @@
   </section>
 
 
+  <!-- Search -->
+
   <section class="controls">
 
     <input
@@ -504,35 +596,98 @@
     >
 
     <select id="filter">
-      <option value="all">All Players</option>
-      <option value="current">Current KKR</option>
-      <option value="former">Former KKR</option>
+
+      <option value="all">
+        All Players
+      </option>
+
+      <option value="current">
+        Current KKR
+      </option>
+
+      <option value="former">
+        Former KKR
+      </option>
+
     </select>
 
   </section>
 
-  <section id="upcoming" class="upcoming-section">
 
-  <div class="section-title">
-    <h2>🎂 Upcoming Birthdays</h2>
-    <span>Next 5</span>
-  </div>
+  <!-- Upcoming Birthdays -->
 
-  <div id="upcomingBirthdays" class="upcoming-grid"></div>
+  <section
+    id="upcoming"
+    class="upcoming-section"
+  >
 
-</section>
+    <div class="section-title">
+
+      <h2>
+        🎂 Upcoming Birthdays
+      </h2>
+
+      <span>
+        Next 5
+      </span>
+
+    </div>
+
+    <div
+      id="upcomingBirthdays"
+      class="upcoming-grid"
+    ></div>
+
+  </section>
+
+
+  <!-- Birthday Calendar -->
+
+  <section
+    id="calendar"
+    class="calendar-section"
+  >
+
+    <div class="section-title">
+
+      <h2>
+        📅 KKR Birthday Calendar
+      </h2>
+
+      <span>
+        All Months
+      </span>
+
+    </div>
+
+    <div
+      id="birthdayCalendar"
+      class="calendar-grid"
+    ></div>
+
+  </section>
+
+
+  <!-- Players -->
 
   <section id="players">
 
     <div class="section-title">
-      <h2>🏏 KKR Players</h2>
+
+      <h2>
+        🏏 KKR Players
+      </h2>
 
       <span id="playerCount">
         0 players
       </span>
+
     </div>
 
-    <div id="playerGrid" class="player-grid"></div>
+    <div
+      id="playerGrid"
+      class="player-grid"
+    ></div>
 
   </section>
 
@@ -549,33 +704,40 @@
 
   /*
    * Google Apps Script Web App
-   * This provides player data from Google Sheets.
    */
+
   const DATA_URL =
     "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
+
 
   let players = [];
 
 
   /*
-   * Load players from Google Sheets
+   * Load players
    */
+
   async function loadPlayers() {
 
     try {
 
-      const response = await fetch(DATA_URL);
+      const response =
+        await fetch(DATA_URL);
 
       if (!response.ok) {
-        throw new Error("Unable to load player data");
+        throw new Error(
+          "Unable to load player data"
+        );
       }
 
-      players = await response.json();
+      players =
+        await response.json();
 
       renderPlayers();
       renderNextBirthday();
       renderUpcomingBirthdays();
       renderBirthdayToday();
+      renderBirthdayCalendar();
 
     } catch (error) {
 
@@ -584,26 +746,37 @@
         error
       );
 
-      document.getElementById("playerGrid").innerHTML =
+      document.getElementById(
+        "playerGrid"
+      ).innerHTML =
         `<div class="empty">
           Unable to load player data right now.
         </div>`;
 
-      document.getElementById("nextPlayer").textContent =
+      document.getElementById(
+        "nextPlayer"
+      ).textContent =
         "Unable to load";
 
-      document.getElementById("nextDate").textContent =
+      document.getElementById(
+        "nextDate"
+      ).textContent =
         "Please try again later";
 
-      document.getElementById("countdown").textContent =
+      document.getElementById(
+        "countdown"
+      ).textContent =
         "Data unavailable";
+
     }
+
   }
 
 
   /*
-   * Get player initials
+   * Initials
    */
+
   function getInitials(name) {
 
     return name
@@ -616,14 +789,18 @@
 
 
   /*
-   * Calculate next birthday
+   * Next birthday
    */
+
   function getNextBirthday(dob) {
 
     const birthDate =
-      new Date(dob + "T00:00:00");
+      new Date(
+        dob + "T00:00:00"
+      );
 
-    const today = new Date();
+    const today =
+      new Date();
 
     const todayOnly =
       new Date(
@@ -675,6 +852,7 @@
   /*
    * Format date
    */
+
   function formatDate(date) {
 
     return date.toLocaleDateString(
@@ -689,19 +867,20 @@
 
 
   /*
-   * Display next birthday
+   * Next Birthday
    */
+
   function renderNextBirthday() {
 
     const birthdays =
       players
-
         .filter(player => player.dob)
-
         .map(player => {
 
           const next =
-            getNextBirthday(player.dob);
+            getNextBirthday(
+              player.dob
+            );
 
           return {
             ...player,
@@ -710,7 +889,6 @@
           };
 
         })
-
         .sort(
           (a, b) =>
             a.nextDate - b.nextDate
@@ -752,7 +930,9 @@
     document.getElementById(
       "nextDate"
     ).textContent =
-      formatDate(next.nextDate);
+      formatDate(
+        next.nextDate
+      );
 
 
     document.getElementById(
@@ -769,161 +949,400 @@
 
   }
 
+
+  /*
+   * Birthday Today
+   */
+
   function renderBirthdayToday() {
 
-  const banner =
-    document.getElementById("birthdayToday");
-
-  const nameElement =
-    document.getElementById("birthdayTodayName");
-
-  if (!banner || !nameElement) return;
-
-  const today = new Date();
-
-  const todayMonth =
-    today.getMonth();
-
-  const todayDay =
-    today.getDate();
-
-  const birthdayPlayers =
-    players.filter(player => {
-
-      if (!player.dob) return false;
-
-      const dob =
-        new Date(player.dob + "T00:00:00");
-
-      return (
-        dob.getMonth() === todayMonth &&
-        dob.getDate() === todayDay
+    const banner =
+      document.getElementById(
+        "birthdayToday"
       );
 
-    });
+    const nameElement =
+      document.getElementById(
+        "birthdayTodayName"
+      );
+
+    if (!banner || !nameElement) {
+      return;
+    }
 
 
-  if (!birthdayPlayers.length) {
+    const today =
+      new Date();
 
-    banner.style.display = "none";
 
-    return;
+    const todayMonth =
+      today.getMonth();
+
+    const todayDay =
+      today.getDate();
+
+
+    const birthdayPlayers =
+      players.filter(player => {
+
+        if (!player.dob) {
+          return false;
+        }
+
+        const dob =
+          new Date(
+            player.dob +
+            "T00:00:00"
+          );
+
+        return (
+          dob.getMonth() ===
+            todayMonth &&
+          dob.getDate() ===
+            todayDay
+        );
+
+      });
+
+
+    if (!birthdayPlayers.length) {
+
+      banner.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    nameElement.textContent =
+      birthdayPlayers
+        .map(player => player.name)
+        .join(" & ");
+
+
+    banner.style.display =
+      "flex";
+
   }
 
 
-  nameElement.textContent =
-    birthdayPlayers
-      .map(player => player.name)
-      .join(" & ");
+  /*
+   * Upcoming 5 Birthdays
+   */
 
-
-  banner.style.display = "flex";
-}
-  
   function renderUpcomingBirthdays() {
 
-  const container =
-    document.getElementById("upcomingBirthdays");
+    const container =
+      document.getElementById(
+        "upcomingBirthdays"
+      );
 
-  if (!container) return;
-
-  const birthdays = players
-    .filter(player => player.dob)
-    .map(player => {
-
-      const next =
-        getNextBirthday(player.dob);
-
-      return {
-        ...player,
-        nextDate: next.date,
-        days: next.days
-      };
-
-    })
-    .sort((a, b) => a.nextDate - b.nextDate)
-    .slice(0, 5);
+    if (!container) {
+      return;
+    }
 
 
-  if (!birthdays.length) {
+    const birthdays =
+      players
+
+        .filter(player => player.dob)
+
+        .map(player => {
+
+          const next =
+            getNextBirthday(
+              player.dob
+            );
+
+          return {
+            ...player,
+            nextDate: next.date,
+            days: next.days
+          };
+
+        })
+
+        .sort(
+          (a, b) =>
+            a.nextDate - b.nextDate
+        )
+
+        .slice(0, 5);
+
+
+    if (!birthdays.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          No verified birthdays available.
+        </div>`;
+
+      return;
+
+    }
+
 
     container.innerHTML =
-      `<div class="empty">
-        No verified birthdays available.
-      </div>`;
+      birthdays
 
-    return;
+        .map(player => {
+
+          const birthday =
+            new Date(
+              player.dob +
+              "T00:00:00"
+            );
+
+
+          const birthdayText =
+            birthday.toLocaleDateString(
+              "en-IN",
+              {
+                day: "numeric",
+                month: "long"
+              }
+            );
+
+
+          const countdown =
+            player.days === 0
+              ? "🎉 Today!"
+
+              : player.days === 1
+                ? "🎂 Tomorrow!"
+
+                : `${player.days} days`;
+
+
+          return `
+
+            <article class="upcoming-card">
+
+              <div class="upcoming-avatar">
+
+                ${
+                  player.photoUrl
+
+                    ? `<img
+                        src="${player.photoUrl}"
+                        alt="${player.name}"
+                        onerror="
+                          this.style.display='none';
+                          this.parentElement.textContent='${getInitials(player.name)}';
+                        "
+                      >`
+
+                    : getInitials(
+                        player.name
+                      )
+                }
+
+              </div>
+
+              <h3>
+                ${player.name}
+              </h3>
+
+              <div class="upcoming-date">
+                🎂 ${birthdayText}
+              </div>
+
+              <div class="upcoming-countdown">
+                ${countdown}
+              </div>
+
+            </article>
+
+          `;
+
+        })
+
+        .join("");
+
   }
 
 
-  container.innerHTML =
-    birthdays
-      .map(player => {
+  /*
+   * Birthday Calendar
+   */
 
-        const birthday =
-          new Date(
-            player.dob + "T00:00:00"
-          );
+  function renderBirthdayCalendar() {
 
-        const birthdayText =
-          birthday.toLocaleDateString(
-            "en-IN",
-            {
-              day: "numeric",
-              month: "long"
-            }
-          );
+    const container =
+      document.getElementById(
+        "birthdayCalendar"
+      );
+
+    if (!container) {
+      return;
+    }
 
 
-        const countdown =
-          player.days === 0
-            ? "🎉 Today!"
-            : player.days === 1
-              ? "🎂 Tomorrow!"
-              : `${player.days} days`;
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
 
 
-        return `
+    const birthdayPlayers =
+      players
+        .filter(player => player.dob)
+        .map(player => {
 
-          <article class="upcoming-card">
+          const dob =
+            new Date(
+              player.dob +
+              "T00:00:00"
+            );
 
-            <div class="upcoming-avatar">
+          return {
+            ...player,
+            month: dob.getMonth(),
+            day: dob.getDate()
+          };
 
-              ${
-                player.photoUrl
-                  ? `<img
-                      src="${player.photoUrl}"
-                      alt="${player.name}"
-                      onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
-                    >`
-                  : getInitials(player.name)
-              }
+        });
 
-            </div>
+
+    let html = "";
+
+
+    monthNames.forEach(
+      (monthName, monthIndex) => {
+
+        const monthPlayers =
+          birthdayPlayers
+
+            .filter(
+              player =>
+                player.month ===
+                monthIndex
+            )
+
+            .sort(
+              (a, b) =>
+                a.day - b.day
+            );
+
+
+        html += `
+
+          <div class="month-card">
 
             <h3>
-              ${player.name}
+              ${monthName}
             </h3>
-
-            <div class="upcoming-date">
-              🎂 ${birthdayText}
-            </div>
-
-            <div class="upcoming-countdown">
-              ${countdown}
-            </div>
-
-          </article>
 
         `;
 
-      })
-      .join("");
-}
+
+        if (!monthPlayers.length) {
+
+          html += `
+            <div class="calendar-player-date">
+              No verified birthdays
+            </div>
+          `;
+
+        } else {
+
+          monthPlayers.forEach(
+            player => {
+
+              const date =
+                new Date(
+                  2000,
+                  player.month,
+                  player.day
+                );
+
+
+              const dateText =
+                date.toLocaleDateString(
+                  "en-IN",
+                  {
+                    day: "numeric",
+                    month: "short"
+                  }
+                );
+
+
+              html += `
+
+                <div class="calendar-player">
+
+                  <div class="calendar-avatar">
+
+                    ${
+                      player.photoUrl
+
+                        ? `<img
+                            src="${player.photoUrl}"
+                            alt="${player.name}"
+                            onerror="
+                              this.style.display='none';
+                              this.parentElement.textContent='${getInitials(player.name)}';
+                            "
+                          >`
+
+                        : getInitials(
+                            player.name
+                          )
+                    }
+
+                  </div>
+
+                  <div class="calendar-player-info">
+
+                    <div class="calendar-player-name">
+                      ${player.name}
+                    </div>
+
+                    <div class="calendar-player-date">
+                      🎂 ${dateText}
+                    </div>
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          );
+
+        }
+
+
+        html += `
+          </div>
+        `;
+
+      }
+    );
+
+
+    container.innerHTML =
+      html;
+
+  }
+
 
   /*
-   * Display players
+   * Player list
    */
+
   function renderPlayers() {
 
     const search =
@@ -952,7 +1371,8 @@
         const matchesFilter =
           filter === "all" ||
           String(player.status)
-            .toLowerCase() === filter;
+            .toLowerCase() ===
+            filter;
 
 
         return (
@@ -988,7 +1408,6 @@
 
 
     grid.innerHTML =
-
       filtered
 
         .map(player => {
@@ -1033,15 +1452,24 @@
             <article class="player">
 
               <div class="avatar">
+
                 ${
                   player.photoUrl
+
                     ? `<img
                         src="${player.photoUrl}"
                         alt="${player.name}"
-                        onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
+                        onerror="
+                          this.style.display='none';
+                          this.parentElement.textContent='${getInitials(player.name)}';
+                        "
                       >`
-                    : getInitials(player.name)
+
+                    : getInitials(
+                        player.name
+                      )
                 }
+
               </div>
 
               <h3>
@@ -1082,6 +1510,7 @@
   /*
    * Search
    */
+
   document
     .getElementById("search")
     .addEventListener(
@@ -1093,6 +1522,7 @@
   /*
    * Current / Former filter
    */
+
   document
     .getElementById("filter")
     .addEventListener(
@@ -1102,8 +1532,9 @@
 
 
   /*
-   * Start loading data
+   * Start application
    */
+
   loadPlayers();
 
 </script>
