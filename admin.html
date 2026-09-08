@@ -156,6 +156,11 @@
       opacity: 0.85;
     }
 
+    button:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+
     .search {
       margin-bottom: 20px;
     }
@@ -208,6 +213,7 @@
       border-radius: 10px;
       display: none;
       font-size: 13px;
+      line-height: 1.5;
     }
 
     .status.success {
@@ -280,10 +286,8 @@
     </p>
 
     <div class="notice">
-      ⚠️ This is the first admin interface. The public website
-      currently reads player data from Google Sheets.
-      We will connect the Add/Edit/Delete buttons to the sheet
-      securely in the next step.
+      🔐 Admin tools update the Google Sheet through your Apps Script.
+      Keep this page private and do not share the admin URL publicly.
     </div>
 
     <form id="playerForm">
@@ -297,9 +301,7 @@
       <div class="form-grid">
 
         <div class="field">
-          <label for="playerName">
-            Player Name
-          </label>
+          <label for="playerName">Player Name</label>
 
           <input
             id="playerName"
@@ -310,9 +312,7 @@
         </div>
 
         <div class="field">
-          <label for="dob">
-            Date of Birth
-          </label>
+          <label for="dob">Date of Birth</label>
 
           <input
             id="dob"
@@ -321,51 +321,27 @@
         </div>
 
         <div class="field">
-          <label for="status">
-            Status
-          </label>
+          <label for="status">Status</label>
 
           <select id="status">
-            <option value="Current">
-              Current
-            </option>
-
-            <option value="Former">
-              Former
-            </option>
+            <option value="Current">Current</option>
+            <option value="Former">Former</option>
           </select>
         </div>
 
         <div class="field">
-          <label for="role">
-            Role
-          </label>
+          <label for="role">Role</label>
 
           <select id="role">
-
-            <option value="Batter">
-              Batter
-            </option>
-
-            <option value="Bowler">
-              Bowler
-            </option>
-
-            <option value="All-Rounder">
-              All-Rounder
-            </option>
-
-            <option value="Wicket-Keeper">
-              Wicket-Keeper
-            </option>
-
+            <option value="Batter">Batter</option>
+            <option value="Bowler">Bowler</option>
+            <option value="All-Rounder">All-Rounder</option>
+            <option value="Wicket-Keeper">Wicket-Keeper</option>
           </select>
         </div>
 
         <div class="field">
-          <label for="seasons">
-            KKR Seasons
-          </label>
+          <label for="seasons">KKR Seasons</label>
 
           <input
             id="seasons"
@@ -375,35 +351,22 @@
         </div>
 
         <div class="field">
-          <label for="reminder">
-            Birthday Reminder
-          </label>
+          <label for="reminder">Birthday Reminder</label>
 
           <select id="reminder">
-
-            <option value="ON">
-              ON
-            </option>
-
-            <option value="OFF">
-              OFF
-            </option>
-
+            <option value="ON">ON</option>
+            <option value="OFF">OFF</option>
           </select>
         </div>
 
         <div class="field full">
-
-          <label for="photoUrl">
-            Photo URL
-          </label>
+          <label for="photoUrl">Photo URL</label>
 
           <input
             id="photoUrl"
             type="url"
             placeholder="https://..."
           >
-
         </div>
 
       </div>
@@ -458,10 +421,7 @@
 <script>
 
   /*
-   * Public player-data endpoint.
-   *
-   * This endpoint is READ ONLY.
-   * It does not expose the Reminder column.
+   * Google Apps Script Web App
    */
   const DATA_URL =
     "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
@@ -580,16 +540,16 @@
             <div class="player-info">
 
               <div class="player-name">
-                ${player.name}
+                ${escapeHtml(player.name)}
               </div>
 
               <div class="player-meta">
                 🎂 ${dobText}
-                • 🏏 ${player.role || "Player"}
-                • ${player.status || "Unknown"}
+                • 🏏 ${escapeHtml(player.role || "Player")}
+                • ${escapeHtml(player.status || "Unknown")}
                 ${
                   player.seasons
-                    ? ` • 📅 ${player.seasons}`
+                    ? ` • 📅 ${escapeHtml(player.seasons)}`
                     : ""
                 }
               </div>
@@ -618,6 +578,16 @@
 
         `;
       }).join("");
+  }
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function editPlayer(index) {
@@ -649,6 +619,13 @@
 
     document.getElementById("photoUrl").value =
       player.photoUrl || "";
+
+    /*
+     * Reminder is not returned by the public API.
+     * Keep the current default when editing.
+     */
+    document.getElementById("reminder").value =
+      "ON";
 
     saveButton.textContent =
       "💾 Update Player";
@@ -689,33 +666,39 @@
     clearStatus();
   }
 
-  function deletePlayer(index) {
+  async function addPlayerToSheet(player) {
 
-    const player =
-      players[index];
+    const response =
+      await fetch(DATA_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "addPlayer",
+          player: player
+        })
+      });
 
-    if (!player) return;
+    const result =
+      await response.json();
 
-    const confirmed =
-      confirm(
-        `Delete ${player.name}?\n\n` +
-        `The delete button is currently a preview only. ` +
-        `We will connect it to Google Sheets securely next.`
+    if (!result.success) {
+      throw new Error(
+        result.message || "Unable to add player"
       );
+    }
 
-    if (!confirmed) return;
-
-    showStatus(
-      "Delete connection will be added in the next step.",
-      "error"
-    );
+    return result;
   }
 
   form.addEventListener(
     "submit",
-    function(event) {
+    async function(event) {
 
       event.preventDefault();
+
+      clearStatus();
 
       const editIndex =
         document.getElementById("editIndex").value;
@@ -723,19 +706,97 @@
       if (editIndex !== "") {
 
         showStatus(
-          "Edit connection will be added in the next step.",
+          "Edit will be connected after Add Player is verified.",
           "error"
         );
 
         return;
       }
 
-      showStatus(
-        "Add connection will be added in the next step.",
-        "error"
-      );
+      const player = {
+
+        name:
+          document.getElementById("playerName").value.trim(),
+
+        dob:
+          document.getElementById("dob").value,
+
+        status:
+          document.getElementById("status").value,
+
+        role:
+          document.getElementById("role").value,
+
+        seasons:
+          document.getElementById("seasons").value.trim(),
+
+        reminder:
+          document.getElementById("reminder").value,
+
+        photoUrl:
+          document.getElementById("photoUrl").value.trim()
+      };
+
+      if (!player.name) {
+
+        showStatus(
+          "Please enter the player name.",
+          "error"
+        );
+
+        return;
+      }
+
+      saveButton.disabled = true;
+      saveButton.textContent = "Saving...";
+
+      try {
+
+        await addPlayerToSheet(player);
+
+        showStatus(
+          `${player.name} was added successfully to Google Sheets.`,
+          "success"
+        );
+
+        resetForm();
+
+        await loadPlayers();
+
+      } catch (error) {
+
+        console.error(error);
+
+        showStatus(
+          "Unable to add the player yet. We need to finish the Apps Script POST connection first.",
+          "error"
+        );
+
+      } finally {
+
+        saveButton.disabled = false;
+
+        if (
+          document.getElementById("editIndex").value === ""
+        ) {
+          saveButton.textContent = "➕ Add Player";
+        }
+      }
     }
   );
+
+  function deletePlayer(index) {
+
+    const player =
+      players[index];
+
+    if (!player) return;
+
+    showStatus(
+      `Delete for ${player.name} will be connected after Add Player is verified.`,
+      "error"
+    );
+  }
 
   cancelButton.addEventListener(
     "click",
