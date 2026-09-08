@@ -268,6 +268,79 @@
       font-size: 12px;
     }
 
+    .upcoming-section {
+  margin-bottom: 45px;
+}
+
+.upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.upcoming-card {
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(244, 208, 111, 0.18);
+  transition: 0.2s ease;
+}
+
+.upcoming-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(244, 208, 111, 0.55);
+}
+
+.upcoming-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: linear-gradient(145deg, #6b3599, #261039);
+  border: 2px solid #f4d06f;
+  color: #f4d06f;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.upcoming-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upcoming-card h3 {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.upcoming-date {
+  color: #cfc6dc;
+  font-size: 12px;
+}
+
+.upcoming-countdown {
+  margin-top: 9px;
+  color: #f4d06f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .upcoming-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .upcoming-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
     @media (max-width: 800px) {
       .player-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -367,6 +440,16 @@
 
   </section>
 
+  <section id="upcoming" class="upcoming-section">
+
+  <div class="section-title">
+    <h2>🎂 Upcoming Birthdays</h2>
+    <span>Next 5</span>
+  </div>
+
+  <div id="upcomingBirthdays" class="upcoming-grid"></div>
+
+</section>
 
   <section id="players">
 
@@ -613,6 +696,106 @@
 
   }
 
+  function renderUpcomingBirthdays() {
+
+  const container =
+    document.getElementById("upcomingBirthdays");
+
+  if (!container) return;
+
+  const birthdays = players
+    .filter(player => player.dob)
+    .map(player => {
+
+      const next =
+        getNextBirthday(player.dob);
+
+      return {
+        ...player,
+        nextDate: next.date,
+        days: next.days
+      };
+
+    })
+    .sort((a, b) => a.nextDate - b.nextDate)
+    .slice(0, 5);
+
+
+  if (!birthdays.length) {
+
+    container.innerHTML =
+      `<div class="empty">
+        No verified birthdays available.
+      </div>`;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    birthdays
+      .map(player => {
+
+        const birthday =
+          new Date(
+            player.dob + "T00:00:00"
+          );
+
+        const birthdayText =
+          birthday.toLocaleDateString(
+            "en-IN",
+            {
+              day: "numeric",
+              month: "long"
+            }
+          );
+
+
+        const countdown =
+          player.days === 0
+            ? "🎉 Today!"
+            : player.days === 1
+              ? "🎂 Tomorrow!"
+              : `${player.days} days`;
+
+
+        return `
+
+          <article class="upcoming-card">
+
+            <div class="upcoming-avatar">
+
+              ${
+                player.photoUrl
+                  ? `<img
+                      src="${player.photoUrl}"
+                      alt="${player.name}"
+                      onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
+                    >`
+                  : getInitials(player.name)
+              }
+
+            </div>
+
+            <h3>
+              ${player.name}
+            </h3>
+
+            <div class="upcoming-date">
+              🎂 ${birthdayText}
+            </div>
+
+            <div class="upcoming-countdown">
+              ${countdown}
+            </div>
+
+          </article>
+
+        `;
+
+      })
+      .join("");
+}
 
   /*
    * Display players
