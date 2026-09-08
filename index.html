@@ -18,6 +18,10 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background:
@@ -27,13 +31,13 @@
     }
 
     header {
-      padding: 25px 20px;
+      padding: 20px;
       border-bottom: 1px solid rgba(255, 215, 100, 0.2);
-      background: rgba(10, 5, 20, 0.55);
+      background: rgba(10, 5, 20, 0.75);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 50;
     }
 
     nav {
@@ -49,6 +53,7 @@
       font-size: 22px;
       font-weight: 800;
       color: #f4d06f;
+      white-space: nowrap;
     }
 
     nav a {
@@ -105,7 +110,7 @@
 
     .birthday-card {
       max-width: 650px;
-      margin: 0 auto 30px;
+      margin: 0 auto 45px;
       padding: 30px;
       text-align: center;
       border-radius: 24px;
@@ -145,51 +150,37 @@
       font-weight: 800;
     }
 
-    .birthday-today {
+    .today-banner {
+      display: none;
+      margin: 0 auto 35px;
       max-width: 800px;
-      margin: 0 auto 30px;
-      padding: 22px 25px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
+      padding: 22px;
+      text-align: center;
       border-radius: 20px;
-      border: 1px solid rgba(244, 208, 111, 0.65);
-      background:
-        linear-gradient(
-          135deg,
-          rgba(107, 53, 153, 0.9),
-          rgba(244, 208, 111, 0.12)
-        );
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(244, 208, 111, 0.7);
+      background: linear-gradient(
+        135deg,
+        rgba(244, 208, 111, 0.16),
+        rgba(92, 42, 143, 0.35)
+      );
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
     }
 
-    .birthday-today-icon {
-      font-size: 45px;
-    }
-
-    .birthday-today-label {
+    .today-banner h2 {
       color: #f4d06f;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
-    .birthday-today h2 {
-      font-size: 25px;
-      margin-bottom: 5px;
-    }
-
-    .birthday-today p {
-      color: #cfc6dc;
-      font-size: 13px;
+    .today-banner p {
+      color: #e9e1ef;
+      line-height: 1.6;
     }
 
     .controls {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
     input,
@@ -218,14 +209,20 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 18px;
+      gap: 15px;
     }
 
     .section-title h2 {
       font-size: 27px;
     }
 
+    .section-title span {
+      color: #bdb3c8;
+      font-size: 13px;
+    }
+
     .upcoming-section {
-      margin-bottom: 45px;
+      margin-bottom: 50px;
     }
 
     .upcoming-grid {
@@ -240,6 +237,7 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(244, 208, 111, 0.18);
       transition: 0.2s ease;
+      cursor: pointer;
     }
 
     .upcoming-card:hover {
@@ -247,14 +245,12 @@
       border-color: rgba(244, 208, 111, 0.55);
     }
 
-    .upcoming-avatar {
-      width: 52px;
-      height: 52px;
+    .upcoming-avatar,
+    .avatar {
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 12px;
       background: linear-gradient(145deg, #6b3599, #261039);
       border: 2px solid #f4d06f;
       color: #f4d06f;
@@ -262,10 +258,18 @@
       overflow: hidden;
     }
 
-    .upcoming-avatar img {
+    .upcoming-avatar {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 12px;
+    }
+
+    .upcoming-avatar img,
+    .avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .upcoming-card h3 {
@@ -285,80 +289,56 @@
       font-weight: 700;
     }
 
-    /* Calendar */
-
     .calendar-section {
-      margin-bottom: 45px;
+      margin-bottom: 50px;
     }
 
     .calendar-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
     }
 
     .month-card {
-      padding: 20px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
+      padding: 18px;
+      min-height: 150px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.09);
     }
 
     .month-card h3 {
       color: #f4d06f;
-      font-size: 19px;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(244, 208, 111, 0.18);
+      margin-bottom: 12px;
+      font-size: 17px;
     }
 
-    .calendar-player {
+    .month-player {
       display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 9px 0;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 0;
       border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .calendar-player:last-child {
-      border-bottom: none;
-    }
-
-    .calendar-avatar {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, #6b3599, #261039);
-      border: 1px solid #f4d06f;
-      color: #f4d06f;
       font-size: 12px;
-      font-weight: 800;
-      overflow: hidden;
+      cursor: pointer;
     }
 
-    .calendar-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .month-player:last-child {
+      border-bottom: 0;
     }
 
-    .calendar-player-info {
-      flex: 1;
+    .month-player:hover {
+      color: #f4d06f;
     }
 
-    .calendar-player-name {
-      font-size: 13px;
-      font-weight: 700;
+    .month-player .day {
+      color: #bdb3c8;
+      white-space: nowrap;
     }
 
-    .calendar-player-date {
-      color: #aaa0b5;
-      font-size: 11px;
-      margin-top: 3px;
+    .no-birthday {
+      color: #766b80;
+      font-size: 12px;
     }
 
     .player-grid {
@@ -373,34 +353,20 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.1);
       transition: 0.2s ease;
+      cursor: pointer;
     }
 
     .player:hover {
       transform: translateY(-4px);
       border-color: rgba(244, 208, 111, 0.55);
+      background: rgba(255,255,255,0.08);
     }
 
     .avatar {
       width: 64px;
       height: 64px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin-bottom: 14px;
-      background: linear-gradient(145deg, #6b3599, #261039);
-      border: 2px solid #f4d06f;
-      color: #f4d06f;
       font-size: 20px;
-      font-weight: 800;
-      overflow: hidden;
-    }
-
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
     }
 
     .player h3 {
@@ -431,6 +397,123 @@
       grid-column: 1 / -1;
     }
 
+    /* Player Profile Modal */
+    .player-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      padding: 20px;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 2, 10, 0.82);
+      backdrop-filter: blur(8px);
+    }
+
+    .player-modal.show {
+      display: flex;
+    }
+
+    .player-modal-content {
+      position: relative;
+      width: min(520px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 35px 28px 30px;
+      border-radius: 26px;
+      border: 1px solid rgba(244, 208, 111, 0.45);
+      background:
+        linear-gradient(
+          145deg,
+          #35165b,
+          #130a20
+        );
+      box-shadow: 0 25px 80px rgba(0,0,0,0.55);
+      text-align: center;
+    }
+
+    .player-modal-close {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .player-modal-close:hover {
+      background: rgba(244,208,111,0.2);
+      color: #f4d06f;
+    }
+
+    .modal-photo {
+      width: 150px;
+      height: 150px;
+      margin: 5px auto 20px;
+      border-radius: 50%;
+      border: 3px solid #f4d06f;
+      background: linear-gradient(145deg, #6b3599, #261039);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #f4d06f;
+      font-size: 42px;
+      font-weight: 800;
+    }
+
+    .modal-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-name {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .modal-status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(244,208,111,0.13);
+      color: #f4d06f;
+      font-size: 12px;
+      margin-bottom: 22px;
+    }
+
+    .profile-details {
+      display: grid;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .profile-row {
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .profile-label {
+      color: #a99db4;
+    }
+
+    .profile-value {
+      color: #ffffff;
+      text-align: right;
+      font-weight: 600;
+    }
+
     footer {
       border-top: 1px solid rgba(255,255,255,0.08);
       padding: 25px 20px;
@@ -445,12 +528,18 @@
       }
 
       .calendar-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
     @media (max-width: 800px) {
       .player-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .calendar-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -468,15 +557,9 @@
         padding-top: 45px;
       }
 
-      .player-grid {
-        grid-template-columns: 1fr;
-      }
-
+      .player-grid,
+      .calendar-grid,
       .upcoming-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .calendar-grid {
         grid-template-columns: 1fr;
       }
 
@@ -484,16 +567,8 @@
         padding: 24px 18px;
       }
 
-      .birthday-today {
-        padding: 18px;
-      }
-
-      .birthday-today-icon {
-        font-size: 35px;
-      }
-
-      .birthday-today h2 {
-        font-size: 21px;
+      .modal-name {
+        font-size: 25px;
       }
     }
   </style>
@@ -532,37 +607,10 @@
     </p>
   </section>
 
-
-  <!-- Birthday Today -->
-
-  <section
-    id="birthdayToday"
-    class="birthday-today"
-    style="display:none;"
-  >
-
-    <div class="birthday-today-icon">
-      🎉
-    </div>
-
-    <div>
-
-      <div class="birthday-today-label">
-        BIRTHDAY TODAY
-      </div>
-
-      <h2 id="birthdayTodayName"></h2>
-
-      <p>
-        Wishing our Knight a very Happy Birthday! 💜💛🏏
-      </p>
-
-    </div>
-
+  <section id="birthdayToday" class="today-banner">
+    <h2>🎉 Birthday Today!</h2>
+    <p id="birthdayTodayText"></p>
   </section>
-
-
-  <!-- Next Birthday -->
 
   <section id="birthdays" class="birthday-card">
 
@@ -584,9 +632,6 @@
 
   </section>
 
-
-  <!-- Search -->
-
   <section class="controls">
 
     <input
@@ -596,142 +641,97 @@
     >
 
     <select id="filter">
-
-      <option value="all">
-        All Players
-      </option>
-
-      <option value="current">
-        Current KKR
-      </option>
-
-      <option value="former">
-        Former KKR
-      </option>
-
+      <option value="all">All Players</option>
+      <option value="current">Current KKR</option>
+      <option value="former">Former KKR</option>
     </select>
 
   </section>
 
-
-  <!-- Upcoming Birthdays -->
-
-  <section
-    id="upcoming"
-    class="upcoming-section"
-  >
+  <section id="upcoming" class="upcoming-section">
 
     <div class="section-title">
-
-      <h2>
-        🎂 Upcoming Birthdays
-      </h2>
-
-      <span>
-        Next 5
-      </span>
-
+      <h2>🎂 Upcoming Birthdays</h2>
+      <span>Next 5</span>
     </div>
 
-    <div
-      id="upcomingBirthdays"
-      class="upcoming-grid"
-    ></div>
+    <div id="upcomingBirthdays" class="upcoming-grid"></div>
 
   </section>
 
-
-  <!-- Birthday Calendar -->
-
-  <section
-    id="calendar"
-    class="calendar-section"
-  >
+  <section id="calendar" class="calendar-section">
 
     <div class="section-title">
-
-      <h2>
-        📅 KKR Birthday Calendar
-      </h2>
-
-      <span>
-        All Months
-      </span>
-
+      <h2>📅 Birthday Calendar</h2>
+      <span>January – December</span>
     </div>
 
-    <div
-      id="birthdayCalendar"
-      class="calendar-grid"
-    ></div>
+    <div id="birthdayCalendar" class="calendar-grid"></div>
 
   </section>
-
-
-  <!-- Players -->
 
   <section id="players">
 
     <div class="section-title">
-
-      <h2>
-        🏏 KKR Players
-      </h2>
+      <h2>🏏 KKR Players</h2>
 
       <span id="playerCount">
         0 players
       </span>
-
     </div>
 
-    <div
-      id="playerGrid"
-      class="player-grid"
-    ></div>
+    <div id="playerGrid" class="player-grid"></div>
 
   </section>
 
 </main>
 
+<!-- Player Profile Popup -->
+<div id="playerModal" class="player-modal">
+
+  <div class="player-modal-content">
+
+    <button
+      class="player-modal-close"
+      id="playerModalClose"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+    <div id="playerModalBody"></div>
+
+  </div>
+
+</div>
 
 <footer>
   KKR Birthday Hub • Unofficial fan-made project •
   Not affiliated with Kolkata Knight Riders
 </footer>
 
-
 <script>
 
   /*
    * Google Apps Script Web App
+   * Player data comes from Google Sheets.
    */
-
   const DATA_URL =
     "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
 
-
   let players = [];
-
-
-  /*
-   * Load players
-   */
 
   async function loadPlayers() {
 
     try {
 
-      const response =
-        await fetch(DATA_URL);
+      const response = await fetch(DATA_URL);
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to load player data"
-        );
+        throw new Error("Unable to load player data");
       }
 
-      players =
-        await response.json();
+      players = await response.json();
 
       renderPlayers();
       renderNextBirthday();
@@ -746,36 +746,21 @@
         error
       );
 
-      document.getElementById(
-        "playerGrid"
-      ).innerHTML =
+      document.getElementById("playerGrid").innerHTML =
         `<div class="empty">
           Unable to load player data right now.
         </div>`;
 
-      document.getElementById(
-        "nextPlayer"
-      ).textContent =
+      document.getElementById("nextPlayer").textContent =
         "Unable to load";
 
-      document.getElementById(
-        "nextDate"
-      ).textContent =
+      document.getElementById("nextDate").textContent =
         "Please try again later";
 
-      document.getElementById(
-        "countdown"
-      ).textContent =
+      document.getElementById("countdown").textContent =
         "Data unavailable";
-
     }
-
   }
-
-
-  /*
-   * Initials
-   */
 
   function getInitials(name) {
 
@@ -784,23 +769,14 @@
       .map(word => word[0])
       .slice(0, 2)
       .join("");
-
   }
-
-
-  /*
-   * Next birthday
-   */
 
   function getNextBirthday(dob) {
 
     const birthDate =
-      new Date(
-        dob + "T00:00:00"
-      );
+      new Date(dob + "T00:00:00");
 
-    const today =
-      new Date();
+    const today = new Date();
 
     const todayOnly =
       new Date(
@@ -816,7 +792,6 @@
         birthDate.getDate()
       );
 
-
     if (next < todayOnly) {
 
       next =
@@ -825,14 +800,11 @@
           birthDate.getMonth(),
           birthDate.getDate()
         );
-
     }
-
 
     const difference =
       next.getTime() -
       todayOnly.getTime();
-
 
     const days =
       Math.ceil(
@@ -840,18 +812,11 @@
         (1000 * 60 * 60 * 24)
       );
 
-
     return {
       date: next,
       days: days
     };
-
   }
-
-
-  /*
-   * Format date
-   */
 
   function formatDate(date) {
 
@@ -862,13 +827,51 @@
         month: "long"
       }
     );
-
   }
 
+  function formatFullDate(dob) {
 
-  /*
-   * Next Birthday
-   */
+    if (!dob) return "Birthday pending verification";
+
+    const date = new Date(dob + "T00:00:00");
+
+    return date.toLocaleDateString(
+      "en-IN",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }
+    );
+  }
+
+  function calculateAge(dob) {
+
+    if (!dob) return "";
+
+    const birthDate = new Date(dob + "T00:00:00");
+    const today = new Date();
+
+    let age =
+      today.getFullYear() -
+      birthDate.getFullYear();
+
+    const monthDifference =
+      today.getMonth() -
+      birthDate.getMonth();
+
+    if (
+      monthDifference < 0 ||
+      (
+        monthDifference === 0 &&
+        today.getDate() < birthDate.getDate()
+      )
+    ) {
+      age--;
+    }
+
+    return age;
+  }
 
   function renderNextBirthday() {
 
@@ -878,22 +881,18 @@
         .map(player => {
 
           const next =
-            getNextBirthday(
-              player.dob
-            );
+            getNextBirthday(player.dob);
 
           return {
             ...player,
             nextDate: next.date,
             days: next.days
           };
-
         })
         .sort(
           (a, b) =>
             a.nextDate - b.nextDate
         );
-
 
     if (!birthdays.length) {
 
@@ -913,163 +912,53 @@
         "🎂";
 
       return;
-
     }
 
-
-    const next =
-      birthdays[0];
-
+    const next = birthdays[0];
 
     document.getElementById(
       "nextPlayer"
     ).textContent =
       next.name;
 
-
     document.getElementById(
       "nextDate"
     ).textContent =
-      formatDate(
-        next.nextDate
-      );
-
+      formatDate(next.nextDate);
 
     document.getElementById(
       "countdown"
     ).textContent =
-
       next.days === 0
         ? "🎉 Today!"
-
         : next.days === 1
           ? "🎂 Tomorrow!"
-
           : `${next.days} days to go`;
-
   }
-
-
-  /*
-   * Birthday Today
-   */
-
-  function renderBirthdayToday() {
-
-    const banner =
-      document.getElementById(
-        "birthdayToday"
-      );
-
-    const nameElement =
-      document.getElementById(
-        "birthdayTodayName"
-      );
-
-    if (!banner || !nameElement) {
-      return;
-    }
-
-
-    const today =
-      new Date();
-
-
-    const todayMonth =
-      today.getMonth();
-
-    const todayDay =
-      today.getDate();
-
-
-    const birthdayPlayers =
-      players.filter(player => {
-
-        if (!player.dob) {
-          return false;
-        }
-
-        const dob =
-          new Date(
-            player.dob +
-            "T00:00:00"
-          );
-
-        return (
-          dob.getMonth() ===
-            todayMonth &&
-          dob.getDate() ===
-            todayDay
-        );
-
-      });
-
-
-    if (!birthdayPlayers.length) {
-
-      banner.style.display =
-        "none";
-
-      return;
-
-    }
-
-
-    nameElement.textContent =
-      birthdayPlayers
-        .map(player => player.name)
-        .join(" & ");
-
-
-    banner.style.display =
-      "flex";
-
-  }
-
-
-  /*
-   * Upcoming 5 Birthdays
-   */
 
   function renderUpcomingBirthdays() {
 
     const container =
-      document.getElementById(
-        "upcomingBirthdays"
-      );
+      document.getElementById("upcomingBirthdays");
 
-    if (!container) {
-      return;
-    }
-
+    if (!container) return;
 
     const birthdays =
       players
-
         .filter(player => player.dob)
-
         .map(player => {
 
           const next =
-            getNextBirthday(
-              player.dob
-            );
+            getNextBirthday(player.dob);
 
           return {
             ...player,
             nextDate: next.date,
             days: next.days
           };
-
         })
-
-        .sort(
-          (a, b) =>
-            a.nextDate - b.nextDate
-        )
-
+        .sort((a, b) => a.nextDate - b.nextDate)
         .slice(0, 5);
-
 
     if (!birthdays.length) {
 
@@ -1079,21 +968,16 @@
         </div>`;
 
       return;
-
     }
-
 
     container.innerHTML =
       birthdays
-
         .map(player => {
 
           const birthday =
             new Date(
-              player.dob +
-              "T00:00:00"
+              player.dob + "T00:00:00"
             );
-
 
           const birthdayText =
             birthday.toLocaleDateString(
@@ -1104,40 +988,29 @@
               }
             );
 
-
           const countdown =
             player.days === 0
               ? "🎉 Today!"
-
               : player.days === 1
                 ? "🎂 Tomorrow!"
-
                 : `${player.days} days`;
 
-
           return `
-
-            <article class="upcoming-card">
+            <article
+              class="upcoming-card"
+              onclick="openPlayerProfile('${encodeURIComponent(player.name)}')"
+            >
 
               <div class="upcoming-avatar">
-
                 ${
                   player.photoUrl
-
                     ? `<img
                         src="${player.photoUrl}"
                         alt="${player.name}"
-                        onerror="
-                          this.style.display='none';
-                          this.parentElement.textContent='${getInitials(player.name)}';
-                        "
+                        onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
                       >`
-
-                    : getInitials(
-                        player.name
-                      )
+                    : getInitials(player.name)
                 }
-
               </div>
 
               <h3>
@@ -1153,31 +1026,62 @@
               </div>
 
             </article>
-
           `;
-
         })
-
         .join("");
-
   }
 
+  function renderBirthdayToday() {
 
-  /*
-   * Birthday Calendar
-   */
+    const banner =
+      document.getElementById("birthdayToday");
+
+    const text =
+      document.getElementById("birthdayTodayText");
+
+    if (!banner || !text) return;
+
+    const today = new Date();
+
+    const birthdayPlayers =
+      players.filter(player => {
+
+        if (!player.dob) return false;
+
+        const dob =
+          new Date(player.dob + "T00:00:00");
+
+        return (
+          dob.getMonth() === today.getMonth() &&
+          dob.getDate() === today.getDate()
+        );
+      });
+
+    if (!birthdayPlayers.length) {
+
+      banner.style.display = "none";
+      return;
+    }
+
+    const names =
+      birthdayPlayers
+        .map(player =>
+          `<strong>${player.name}</strong>`
+        )
+        .join(" & ");
+
+    text.innerHTML =
+      `Wishing ${names} a very happy birthday! 💜💛🎂`;
+
+    banner.style.display = "block";
+  }
 
   function renderBirthdayCalendar() {
 
     const container =
-      document.getElementById(
-        "birthdayCalendar"
-      );
+      document.getElementById("birthdayCalendar");
 
-    if (!container) {
-      return;
-    }
-
+    if (!container) return;
 
     const monthNames = [
       "January",
@@ -1194,154 +1098,70 @@
       "December"
     ];
 
+    container.innerHTML =
+      monthNames
+        .map((monthName, monthIndex) => {
 
-    const birthdayPlayers =
-      players
-        .filter(player => player.dob)
-        .map(player => {
+          const monthPlayers =
+            players
+              .filter(player => {
 
-          const dob =
-            new Date(
-              player.dob +
-              "T00:00:00"
-            );
+                if (!player.dob) return false;
 
-          return {
-            ...player,
-            month: dob.getMonth(),
-            day: dob.getDate()
-          };
+                const dob =
+                  new Date(
+                    player.dob + "T00:00:00"
+                  );
 
-        });
+                return dob.getMonth() === monthIndex;
+              })
+              .sort((a, b) => {
 
+                const dayA =
+                  new Date(
+                    a.dob + "T00:00:00"
+                  ).getDate();
 
-    let html = "";
+                const dayB =
+                  new Date(
+                    b.dob + "T00:00:00"
+                  ).getDate();
 
+                return dayA - dayB;
+              });
 
-    monthNames.forEach(
-      (monthName, monthIndex) => {
+          const content =
+            monthPlayers.length
+              ? monthPlayers.map(player => {
 
-        const monthPlayers =
-          birthdayPlayers
+                  const day =
+                    new Date(
+                      player.dob + "T00:00:00"
+                    ).getDate();
 
-            .filter(
-              player =>
-                player.month ===
-                monthIndex
-            )
+                  return `
+                    <div
+                      class="month-player"
+                      onclick="openPlayerProfile('${encodeURIComponent(player.name)}')"
+                    >
+                      <span>${player.name}</span>
+                      <span class="day">${day}</span>
+                    </div>
+                  `;
+                }).join("")
+              : `<div class="no-birthday">
+                  No verified birthdays
+                </div>`;
 
-            .sort(
-              (a, b) =>
-                a.day - b.day
-            );
-
-
-        html += `
-
-          <div class="month-card">
-
-            <h3>
-              ${monthName}
-            </h3>
-
-        `;
-
-
-        if (!monthPlayers.length) {
-
-          html += `
-            <div class="calendar-player-date">
-              No verified birthdays
+          return `
+            <div class="month-card">
+              <h3>${monthName}</h3>
+              ${content}
             </div>
           `;
-
-        } else {
-
-          monthPlayers.forEach(
-            player => {
-
-              const date =
-                new Date(
-                  2000,
-                  player.month,
-                  player.day
-                );
-
-
-              const dateText =
-                date.toLocaleDateString(
-                  "en-IN",
-                  {
-                    day: "numeric",
-                    month: "short"
-                  }
-                );
-
-
-              html += `
-
-                <div class="calendar-player">
-
-                  <div class="calendar-avatar">
-
-                    ${
-                      player.photoUrl
-
-                        ? `<img
-                            src="${player.photoUrl}"
-                            alt="${player.name}"
-                            onerror="
-                              this.style.display='none';
-                              this.parentElement.textContent='${getInitials(player.name)}';
-                            "
-                          >`
-
-                        : getInitials(
-                            player.name
-                          )
-                    }
-
-                  </div>
-
-                  <div class="calendar-player-info">
-
-                    <div class="calendar-player-name">
-                      ${player.name}
-                    </div>
-
-                    <div class="calendar-player-date">
-                      🎂 ${dateText}
-                    </div>
-
-                  </div>
-
-                </div>
-
-              `;
-
-            }
-          );
-
-        }
-
-
-        html += `
-          </div>
-        `;
-
-      }
-    );
-
-
-    container.innerHTML =
-      html;
-
+        })
+        .join("");
   }
-
-
-  /*
-   * Player list
-   */
 
   function renderPlayers() {
 
@@ -1352,12 +1172,10 @@
         .toLowerCase()
         .trim();
 
-
     const filter =
       document
         .getElementById("filter")
         .value;
-
 
     const filtered =
       players.filter(player => {
@@ -1367,33 +1185,26 @@
             .toLowerCase()
             .includes(search);
 
-
         const matchesFilter =
           filter === "all" ||
           String(player.status)
-            .toLowerCase() ===
-            filter;
-
+            .toLowerCase() === filter;
 
         return (
           matchesSearch &&
           matchesFilter
         );
-
       });
-
 
     document.getElementById(
       "playerCount"
     ).textContent =
       `${filtered.length} players`;
 
-
     const grid =
       document.getElementById(
         "playerGrid"
       );
-
 
     if (!filtered.length) {
 
@@ -1403,13 +1214,10 @@
         </div>`;
 
       return;
-
     }
-
 
     grid.innerHTML =
       filtered
-
         .map(player => {
 
           const birthday =
@@ -1420,10 +1228,8 @@
                 )
               : null;
 
-
           const birthdayText =
             birthday
-
               ? `🎂 ${birthday.toLocaleDateString(
                   "en-IN",
                   {
@@ -1431,45 +1237,34 @@
                     month: "long"
                   }
                 )}`
-
               : "🎂 Birthday pending verification";
-
 
           const status =
             String(
               player.status || ""
             ).toLowerCase();
 
-
           const statusText =
             status === "current"
               ? "Current KKR"
               : "Former KKR";
 
-
           return `
-
-            <article class="player">
+            <article
+              class="player"
+              onclick="openPlayerProfile('${encodeURIComponent(player.name)}')"
+            >
 
               <div class="avatar">
-
                 ${
                   player.photoUrl
-
                     ? `<img
                         src="${player.photoUrl}"
                         alt="${player.name}"
-                        onerror="
-                          this.style.display='none';
-                          this.parentElement.textContent='${getInitials(player.name)}';
-                        "
+                        onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
                       >`
-
-                    : getInitials(
-                        player.name
-                      )
+                    : getInitials(player.name)
                 }
-
               </div>
 
               <h3>
@@ -1497,19 +1292,159 @@
               </span>
 
             </article>
-
           `;
-
         })
-
         .join("");
-
   }
 
+  function openPlayerProfile(encodedName) {
 
-  /*
-   * Search
-   */
+    const name =
+      decodeURIComponent(encodedName);
+
+    const player =
+      players.find(
+        p => p.name === name
+      );
+
+    if (!player) return;
+
+    const modal =
+      document.getElementById("playerModal");
+
+    const body =
+      document.getElementById("playerModalBody");
+
+    const status =
+      String(
+        player.status || ""
+      ).toLowerCase();
+
+    const statusText =
+      status === "current"
+        ? "Current KKR"
+        : "Former KKR";
+
+    const photo =
+      player.photoUrl
+        ? `<img
+            src="${player.photoUrl}"
+            alt="${player.name}"
+            onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(player.name)}';"
+          >`
+        : getInitials(player.name);
+
+    const age =
+      calculateAge(player.dob);
+
+    body.innerHTML = `
+
+      <div class="modal-photo">
+        ${photo}
+      </div>
+
+      <h2 class="modal-name">
+        ${player.name}
+      </h2>
+
+      <div class="modal-status">
+        ${statusText}
+      </div>
+
+      <div class="profile-details">
+
+        <div class="profile-row">
+          <span class="profile-label">🎂 Date of Birth</span>
+          <span class="profile-value">
+            ${formatFullDate(player.dob)}
+          </span>
+        </div>
+
+        ${
+          age !== ""
+            ? `
+              <div class="profile-row">
+                <span class="profile-label">🎈 Age</span>
+                <span class="profile-value">
+                  ${age} years
+                </span>
+              </div>
+            `
+            : ""
+        }
+
+        <div class="profile-row">
+          <span class="profile-label">🏏 Role</span>
+          <span class="profile-value">
+            ${player.role || "Player"}
+          </span>
+        </div>
+
+        ${
+          player.seasons
+            ? `
+              <div class="profile-row">
+                <span class="profile-label">📅 KKR Seasons</span>
+                <span class="profile-value">
+                  ${player.seasons}
+                </span>
+              </div>
+            `
+            : ""
+        }
+
+        <div class="profile-row">
+          <span class="profile-label">💜 KKR Status</span>
+          <span class="profile-value">
+            ${statusText}
+          </span>
+        </div>
+
+      </div>
+    `;
+
+    modal.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePlayerProfile() {
+
+    const modal =
+      document.getElementById("playerModal");
+
+    modal.classList.remove("show");
+
+    document.body.style.overflow = "";
+  }
+
+  document
+    .getElementById("playerModalClose")
+    .addEventListener(
+      "click",
+      closePlayerProfile
+    );
+
+  document
+    .getElementById("playerModal")
+    .addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+          closePlayerProfile();
+        }
+      }
+    );
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key === "Escape") {
+        closePlayerProfile();
+      }
+    }
+  );
 
   document
     .getElementById("search")
@@ -1518,22 +1453,12 @@
       renderPlayers
     );
 
-
-  /*
-   * Current / Former filter
-   */
-
   document
     .getElementById("filter")
     .addEventListener(
       "change",
       renderPlayers
     );
-
-
-  /*
-   * Start application
-   */
 
   loadPlayers();
 
