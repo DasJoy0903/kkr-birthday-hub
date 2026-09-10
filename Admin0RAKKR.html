@@ -2344,7 +2344,6 @@ function renderOnThisDayEvents() {
    EDIT ON THIS DAY EVENT
 ========================================================= */
 
-
 function editOnThisDayEvent(
   index,
   rowNumber
@@ -2359,6 +2358,80 @@ function editOnThisDayEvent(
   }
 
 
+  /*
+    Convert the date into DD/MM format.
+
+    Apps Script may return the Sheet
+    date as either text or a Date value.
+  */
+
+  let eventDate = event.date || "";
+
+
+  if (
+    eventDate &&
+    !isNaN(
+      new Date(eventDate).getTime()
+    )
+  ) {
+
+    const dateObject =
+      new Date(eventDate);
+
+
+    const day =
+      String(
+        dateObject.getDate()
+      ).padStart(2, "0");
+
+
+    const month =
+      String(
+        dateObject.getMonth() + 1
+      ).padStart(2, "0");
+
+
+    eventDate =
+      day + "/" + month;
+
+  }
+
+
+  /*
+    If the value is already DD/MM,
+    keep it as it is.
+  */
+
+  else {
+
+    const parts =
+      String(eventDate)
+        .trim()
+        .split("/");
+
+
+    if (parts.length >= 2) {
+
+      eventDate =
+        String(
+          parseInt(
+            parts[0],
+            10
+          )
+        ).padStart(2, "0") +
+        "/" +
+        String(
+          parseInt(
+            parts[1],
+            10
+          )
+        ).padStart(2, "0");
+
+    }
+
+  }
+
+
   document.getElementById(
     "editEventRowNumber"
   ).value =
@@ -2368,7 +2441,7 @@ function editOnThisDayEvent(
   document.getElementById(
     "eventDate"
   ).value =
-    event.date || "";
+    eventDate;
 
 
   document.getElementById(
@@ -2398,8 +2471,7 @@ function editOnThisDayEvent(
   document.getElementById(
     "eventReminder"
   ).value =
-    event.reminder ||
-    "ON";
+    event.reminder || "ON";
 
 
   eventSaveButton.textContent =
@@ -2426,6 +2498,7 @@ function editOnThisDayEvent(
   });
 
 }
+
 
 
 /* =========================================================
