@@ -1882,7 +1882,7 @@ async function sendRequest(
 
   const response =
     await fetch(
-      DATA_URL + "?key=KKR_ADMIN_2026",
+      DATA_URL + "?key=" + encodeURIComponent(adminToken),
       {
 
         method:
@@ -2929,26 +2929,78 @@ eventSearch.addEventListener(
 /* =========================================================
    INITIAL LOAD
 ========================================================= */
-const ADMIN_PASSWORD = "KKR_ADMIN_2026";
+let adminToken = "";
 
-document.getElementById("loginButton").addEventListener("click", function () {
+document.getElementById("loginButton").addEventListener("click", async function () {
 
   const password =
     document.getElementById("adminPassword").value;
 
-  const loginScreen =
-    document.getElementById("loginScreen");
+  const loginButton =
+    document.getElementById("loginButton");
 
   const loginError =
     document.getElementById("loginError");
 
-  if (password === ADMIN_PASSWORD) {
+  const loginScreen =
+    document.getElementById("loginScreen");
+
+  if (!password) {
+    loginError.textContent = "Please enter your password.";
+    loginError.style.display = "block";
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Logging in...";
+  loginError.style.display = "none";
+
+  try {
+
+    const response = await fetch(DATA_URL, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+
+      body: JSON.stringify({
+        action: "adminLogin",
+        password: password
+      })
+
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(
+        result.message || "Invalid password"
+      );
+    }
+
+    adminToken = result.token;
 
     loginScreen.style.display = "none";
 
-  } else {
+    document.getElementById("adminPassword").value = "";
+
+    await loadData();
+
+  } catch (error) {
+
+    console.error(error);
+
+    loginError.textContent =
+      error.message || "Login failed.";
 
     loginError.style.display = "block";
+
+  } finally {
+
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
 
   }
 
