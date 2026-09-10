@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>KKR Birthday Hub — Admin</title>
 
   <style>
@@ -282,8 +281,6 @@
   </div>
 
 
-  <!-- PLAYER FORM -->
-
   <div class="card">
 
     <h1>Player Management</h1>
@@ -300,24 +297,16 @@
 
     <form id="playerForm">
 
-      <!-- Stores the actual Google Sheet row number when editing -->
       <input
         type="hidden"
         id="editRowNumber"
         value=""
       >
 
-
       <div class="form-grid">
 
-
-        <!-- PLAYER NAME -->
-
         <div class="field">
-
-          <label for="playerName">
-            Player Name
-          </label>
+          <label for="playerName">Player Name</label>
 
           <input
             id="playerName"
@@ -325,33 +314,21 @@
             placeholder="e.g. Rinku Singh"
             required
           >
-
         </div>
 
 
-        <!-- DOB -->
-
         <div class="field">
-
-          <label for="dob">
-            Date of Birth
-          </label>
+          <label for="dob">Date of Birth</label>
 
           <input
             id="dob"
             type="date"
           >
-
         </div>
 
 
-        <!-- STATUS -->
-
         <div class="field">
-
-          <label for="status">
-            Status
-          </label>
+          <label for="status">Status</label>
 
           <select id="status">
 
@@ -364,17 +341,11 @@
             </option>
 
           </select>
-
         </div>
 
 
-        <!-- ROLE -->
-
         <div class="field">
-
-          <label for="role">
-            Role
-          </label>
+          <label for="role">Role</label>
 
           <select id="role">
 
@@ -395,34 +366,22 @@
             </option>
 
           </select>
-
         </div>
 
 
-        <!-- SEASONS -->
-
         <div class="field">
-
-          <label for="seasons">
-            KKR Seasons
-          </label>
+          <label for="seasons">KKR Seasons</label>
 
           <input
             id="seasons"
             type="text"
             placeholder="e.g. 2024-Present"
           >
-
         </div>
 
 
-        <!-- REMINDER -->
-
         <div class="field">
-
-          <label for="reminder">
-            Birthday Reminder
-          </label>
+          <label for="reminder">Birthday Reminder</label>
 
           <select id="reminder">
 
@@ -435,11 +394,8 @@
             </option>
 
           </select>
-
         </div>
 
-
-        <!-- PHOTO -->
 
         <div class="field full">
 
@@ -492,13 +448,9 @@
 
 
 
-  <!-- PLAYER LIST -->
-
   <div class="card">
 
-    <h2>
-      🏏 Players
-    </h2>
+    <h2>🏏 Players</h2>
 
     <input
       id="search"
@@ -519,11 +471,6 @@
 
 
 <script>
-
-
-/*
- * GOOGLE APPS SCRIPT WEB APP
- */
 
 const DATA_URL =
   "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
@@ -551,10 +498,6 @@ const statusMessage =
   document.getElementById("statusMessage");
 
 
-
-/*
- * LOAD PLAYERS
- */
 
 async function loadPlayers() {
 
@@ -593,10 +536,6 @@ async function loadPlayers() {
 
 
 
-/*
- * STATUS MESSAGE
- */
-
 function showStatus(message, type) {
 
   statusMessage.textContent =
@@ -606,6 +545,7 @@ function showStatus(message, type) {
     `status ${type}`;
 
 }
+
 
 
 function clearStatus() {
@@ -619,10 +559,6 @@ function clearStatus() {
 }
 
 
-
-/*
- * HTML SECURITY
- */
 
 function escapeHtml(value) {
 
@@ -641,10 +577,6 @@ function escapeHtml(value) {
 }
 
 
-
-/*
- * DISPLAY PLAYERS
- */
 
 function renderPlayers() {
 
@@ -677,61 +609,46 @@ function renderPlayers() {
   playerList.innerHTML =
     filtered.map(player => {
 
-
       const originalIndex =
         players.indexOf(player);
 
 
       /*
-       * Google Sheet:
-       *
-       * Row 1 = Header
-       * Row 2 = First Player
-       *
-       * Therefore:
-       * sheet row = array index + 2
+       * Row 1 = header
+       * Therefore player array index + 2
+       * gives the Google Sheet row.
        */
 
       const sheetRowNumber =
         originalIndex + 2;
 
 
-      let dobText =
-        "Birthday pending";
+      const dobText =
+        player.dob
 
+          ? new Date(
+              player.dob + "T00:00:00"
+            ).toLocaleDateString(
+              "en-IN",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+              }
+            )
 
-      if (player.dob) {
-
-        dobText =
-          new Date(
-            player.dob + "T00:00:00"
-          ).toLocaleDateString(
-            "en-IN",
-            {
-              day: "numeric",
-              month: "long",
-              year: "numeric"
-            }
-          );
-
-      }
+          : "Birthday pending";
 
 
       return `
 
         <div class="player-row">
 
-
           <div class="player-info">
 
             <div class="player-name">
-
-              ${escapeHtml(
-                player.name
-              )}
-
+              ${escapeHtml(player.name)}
             </div>
-
 
             <div class="player-meta">
 
@@ -760,7 +677,6 @@ function renderPlayers() {
 
           <div class="row-buttons">
 
-
             <button
               class="secondary small-button"
               onclick="editPlayer(
@@ -775,15 +691,14 @@ function renderPlayers() {
             <button
               class="danger small-button"
               onclick="deletePlayer(
-                ${originalIndex}
+                ${originalIndex},
+                ${sheetRowNumber}
               )"
             >
               🗑️ Delete
             </button>
 
-
           </div>
-
 
         </div>
 
@@ -794,10 +709,6 @@ function renderPlayers() {
 }
 
 
-
-/*
- * EDIT PLAYER
- */
 
 function editPlayer(
   index,
@@ -812,10 +723,6 @@ function editPlayer(
     return;
   }
 
-
-  /*
-   * Save the real Google Sheet row.
-   */
 
   document.getElementById(
     "editRowNumber"
@@ -855,13 +762,6 @@ function editPlayer(
     player.seasons || "";
 
 
-  /*
-   * The current public doGet()
-   * does not return the Reminder column.
-   *
-   * We keep ON here for now.
-   */
-
   document.getElementById(
     "reminder"
   ).value =
@@ -893,10 +793,6 @@ function editPlayer(
 }
 
 
-
-/*
- * RESET FORM
- */
 
 function resetForm() {
 
@@ -941,10 +837,6 @@ function resetForm() {
 
 
 
-/*
- * SEND POST REQUEST
- */
-
 async function sendRequest(
   payload
 ) {
@@ -986,16 +878,11 @@ async function sendRequest(
 
 
 
-/*
- * ADD / UPDATE PLAYER
- */
-
 form.addEventListener(
   "submit",
   async function(event) {
 
     event.preventDefault();
-
 
     clearStatus();
 
@@ -1065,10 +952,6 @@ form.addEventListener(
     try {
 
 
-      /*
-       * EDIT MODE
-       */
-
       if (rowNumber) {
 
         saveButton.textContent =
@@ -1097,10 +980,6 @@ form.addEventListener(
       }
 
 
-      /*
-       * ADD MODE
-       */
-
       else {
 
         saveButton.textContent =
@@ -1128,11 +1007,10 @@ form.addEventListener(
 
       resetForm();
 
-
       await loadPlayers();
 
-
     }
+
 
     catch (error) {
 
@@ -1167,13 +1045,13 @@ form.addEventListener(
 
 
 /*
- * DELETE
- *
- * We will connect this after
- * Edit has been successfully tested.
+ * DELETE PLAYER
  */
 
-function deletePlayer(index) {
+async function deletePlayer(
+  index,
+  rowNumber
+) {
 
   const player =
     players[index];
@@ -1184,18 +1062,81 @@ function deletePlayer(index) {
   }
 
 
-  showStatus(
-    `Delete is not connected yet. ${player.name} has not been deleted.`,
-    "error"
-  );
+  const confirmed =
+    confirm(
+      `Are you sure you want to delete "${player.name}"?\n\nThis will permanently remove the player from the Google Sheet.`
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  clearStatus();
+
+
+  try {
+
+    await sendRequest({
+
+      action:
+        "deletePlayer",
+
+      rowNumber:
+        Number(rowNumber)
+
+    });
+
+
+    showStatus(
+      `${player.name} was deleted successfully.`,
+      "success"
+    );
+
+
+    /*
+     * If the deleted player was
+     * currently being edited,
+     * clear the form.
+     */
+
+    const currentRow =
+      document.getElementById(
+        "editRowNumber"
+      ).value;
+
+
+    if (
+      currentRow === String(rowNumber)
+    ) {
+
+      resetForm();
+
+    }
+
+
+    await loadPlayers();
+
+  }
+
+
+  catch (error) {
+
+    console.error(error);
+
+
+    showStatus(
+      error.message ||
+      "Unable to delete the player.",
+      "error"
+    );
+
+  }
 
 }
 
 
-
-/*
- * CANCEL EDIT
- */
 
 cancelButton.addEventListener(
   "click",
@@ -1204,20 +1145,12 @@ cancelButton.addEventListener(
 
 
 
-/*
- * SEARCH
- */
-
 search.addEventListener(
   "input",
   renderPlayers
 );
 
 
-
-/*
- * START
- */
 
 loadPlayers();
 
