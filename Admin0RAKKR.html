@@ -144,7 +144,7 @@
 
     .secondary {
       background: rgba(255,255,255,0.10);
-      color: white;
+      color: #ffffff;
     }
 
     .danger {
@@ -270,12 +270,19 @@
 <div class="container">
 
   <div class="header">
-    <div class="logo">💜 KKR Birthday Hub Admin</div>
+
+    <div class="logo">
+      💜 KKR Birthday Hub Admin
+    </div>
 
     <a class="back" href="index.html">
       ← Back to Website
     </a>
+
   </div>
+
+
+  <!-- PLAYER FORM -->
 
   <div class="card">
 
@@ -290,18 +297,27 @@
       Keep this page private and do not share the admin URL publicly.
     </div>
 
+
     <form id="playerForm">
 
+      <!-- Stores the actual Google Sheet row number when editing -->
       <input
         type="hidden"
-        id="editIndex"
+        id="editRowNumber"
         value=""
       >
 
+
       <div class="form-grid">
 
+
+        <!-- PLAYER NAME -->
+
         <div class="field">
-          <label for="playerName">Player Name</label>
+
+          <label for="playerName">
+            Player Name
+          </label>
 
           <input
             id="playerName"
@@ -309,67 +325,138 @@
             placeholder="e.g. Rinku Singh"
             required
           >
+
         </div>
 
+
+        <!-- DOB -->
+
         <div class="field">
-          <label for="dob">Date of Birth</label>
+
+          <label for="dob">
+            Date of Birth
+          </label>
 
           <input
             id="dob"
             type="date"
           >
+
         </div>
 
+
+        <!-- STATUS -->
+
         <div class="field">
-          <label for="status">Status</label>
+
+          <label for="status">
+            Status
+          </label>
 
           <select id="status">
-            <option value="Current">Current</option>
-            <option value="Former">Former</option>
+
+            <option value="Current">
+              Current
+            </option>
+
+            <option value="Former">
+              Former
+            </option>
+
           </select>
+
         </div>
 
+
+        <!-- ROLE -->
+
         <div class="field">
-          <label for="role">Role</label>
+
+          <label for="role">
+            Role
+          </label>
 
           <select id="role">
-            <option value="Batter">Batter</option>
-            <option value="Bowler">Bowler</option>
-            <option value="All-Rounder">All-Rounder</option>
-            <option value="Wicket-Keeper">Wicket-Keeper</option>
+
+            <option value="Batter">
+              Batter
+            </option>
+
+            <option value="Bowler">
+              Bowler
+            </option>
+
+            <option value="All-Rounder">
+              All-Rounder
+            </option>
+
+            <option value="Wicket-Keeper">
+              Wicket-Keeper
+            </option>
+
           </select>
+
         </div>
 
+
+        <!-- SEASONS -->
+
         <div class="field">
-          <label for="seasons">KKR Seasons</label>
+
+          <label for="seasons">
+            KKR Seasons
+          </label>
 
           <input
             id="seasons"
             type="text"
             placeholder="e.g. 2024-Present"
           >
+
         </div>
+
+
+        <!-- REMINDER -->
 
         <div class="field">
-          <label for="reminder">Birthday Reminder</label>
+
+          <label for="reminder">
+            Birthday Reminder
+          </label>
 
           <select id="reminder">
-            <option value="ON">ON</option>
-            <option value="OFF">OFF</option>
+
+            <option value="ON">
+              ON
+            </option>
+
+            <option value="OFF">
+              OFF
+            </option>
+
           </select>
+
         </div>
 
+
+        <!-- PHOTO -->
+
         <div class="field full">
-          <label for="photoUrl">Photo URL</label>
+
+          <label for="photoUrl">
+            Photo URL
+          </label>
 
           <input
             id="photoUrl"
             type="url"
             placeholder="https://..."
           >
+
         </div>
 
       </div>
+
 
       <div class="buttons">
 
@@ -380,6 +467,7 @@
         >
           ➕ Add Player
         </button>
+
 
         <button
           type="button"
@@ -392,15 +480,25 @@
 
       </div>
 
-      <div id="statusMessage" class="status"></div>
+
+      <div
+        id="statusMessage"
+        class="status"
+      ></div>
 
     </form>
 
   </div>
 
+
+
+  <!-- PLAYER LIST -->
+
   <div class="card">
 
-    <h2>🏏 Players</h2>
+    <h2>
+      🏏 Players
+    </h2>
 
     <input
       id="search"
@@ -418,397 +516,710 @@
 
 </div>
 
+
+
 <script>
 
-  /*
-   * Google Apps Script Web App
-   */
-  const DATA_URL =
-    "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
 
-  let players = [];
+/*
+ * GOOGLE APPS SCRIPT WEB APP
+ */
 
-  const form =
-    document.getElementById("playerForm");
+const DATA_URL =
+  "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
 
-  const search =
-    document.getElementById("search");
 
-  const playerList =
-    document.getElementById("playerList");
+let players = [];
 
-  const saveButton =
-    document.getElementById("saveButton");
 
-  const cancelButton =
-    document.getElementById("cancelButton");
+const form =
+  document.getElementById("playerForm");
 
-  const statusMessage =
-    document.getElementById("statusMessage");
+const search =
+  document.getElementById("search");
 
-  async function loadPlayers() {
+const playerList =
+  document.getElementById("playerList");
 
-    try {
+const saveButton =
+  document.getElementById("saveButton");
 
-      const response =
-        await fetch(DATA_URL);
+const cancelButton =
+  document.getElementById("cancelButton");
 
-      if (!response.ok) {
-        throw new Error("Unable to load players");
-      }
+const statusMessage =
+  document.getElementById("statusMessage");
 
-      players =
-        await response.json();
 
-      renderPlayers();
 
-    } catch (error) {
+/*
+ * LOAD PLAYERS
+ */
 
-      console.error(error);
+async function loadPlayers() {
 
-      playerList.innerHTML =
-        `<div class="empty">
-          Unable to load player data.
-        </div>`;
-    }
-  }
+  try {
 
-  function showStatus(message, type) {
+    const response =
+      await fetch(DATA_URL);
 
-    statusMessage.textContent = message;
+    if (!response.ok) {
 
-    statusMessage.className =
-      `status ${type}`;
-  }
-
-  function clearStatus() {
-
-    statusMessage.textContent = "";
-
-    statusMessage.className =
-      "status";
-  }
-
-  function renderPlayers() {
-
-    const query =
-      search.value
-        .toLowerCase()
-        .trim();
-
-    const filtered =
-      players.filter(player =>
-        player.name
-          .toLowerCase()
-          .includes(query)
+      throw new Error(
+        "Unable to load players"
       );
 
-    if (!filtered.length) {
-
-      playerList.innerHTML =
-        `<div class="empty">
-          No players found.
-        </div>`;
-
-      return;
     }
 
+    players =
+      await response.json();
+
+    renderPlayers();
+
+  }
+
+  catch (error) {
+
+    console.error(error);
+
     playerList.innerHTML =
-      filtered.map(player => {
+      `<div class="empty">
+        Unable to load player data.
+      </div>`;
 
-        const originalIndex =
-          players.indexOf(player);
+  }
 
-        const dobText =
-          player.dob
-            ? new Date(
-                player.dob + "T00:00:00"
-              ).toLocaleDateString(
-                "en-IN",
-                {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric"
-                }
-              )
-            : "Birthday pending";
+}
 
-        return `
 
-          <div class="player-row">
 
-            <div class="player-info">
+/*
+ * STATUS MESSAGE
+ */
 
-              <div class="player-name">
-                ${escapeHtml(player.name)}
-              </div>
+function showStatus(message, type) {
 
-              <div class="player-meta">
-                🎂 ${dobText}
-                • 🏏 ${escapeHtml(player.role || "Player")}
-                • ${escapeHtml(player.status || "Unknown")}
-                ${
-                  player.seasons
-                    ? ` • 📅 ${escapeHtml(player.seasons)}`
-                    : ""
-                }
-              </div>
+  statusMessage.textContent =
+    message;
+
+  statusMessage.className =
+    `status ${type}`;
+
+}
+
+
+function clearStatus() {
+
+  statusMessage.textContent =
+    "";
+
+  statusMessage.className =
+    "status";
+
+}
+
+
+
+/*
+ * HTML SECURITY
+ */
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+
+/*
+ * DISPLAY PLAYERS
+ */
+
+function renderPlayers() {
+
+  const query =
+    search.value
+      .toLowerCase()
+      .trim();
+
+
+  const filtered =
+    players.filter(player =>
+      String(player.name || "")
+        .toLowerCase()
+        .includes(query)
+    );
+
+
+  if (!filtered.length) {
+
+    playerList.innerHTML =
+      `<div class="empty">
+        No players found.
+      </div>`;
+
+    return;
+
+  }
+
+
+  playerList.innerHTML =
+    filtered.map(player => {
+
+
+      const originalIndex =
+        players.indexOf(player);
+
+
+      /*
+       * Google Sheet:
+       *
+       * Row 1 = Header
+       * Row 2 = First Player
+       *
+       * Therefore:
+       * sheet row = array index + 2
+       */
+
+      const sheetRowNumber =
+        originalIndex + 2;
+
+
+      let dobText =
+        "Birthday pending";
+
+
+      if (player.dob) {
+
+        dobText =
+          new Date(
+            player.dob + "T00:00:00"
+          ).toLocaleDateString(
+            "en-IN",
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            }
+          );
+
+      }
+
+
+      return `
+
+        <div class="player-row">
+
+
+          <div class="player-info">
+
+            <div class="player-name">
+
+              ${escapeHtml(
+                player.name
+              )}
 
             </div>
 
-            <div class="row-buttons">
 
-              <button
-                class="secondary small-button"
-                onclick="editPlayer(${originalIndex})"
-              >
-                ✏️ Edit
-              </button>
+            <div class="player-meta">
 
-              <button
-                class="danger small-button"
-                onclick="deletePlayer(${originalIndex})"
-              >
-                🗑️ Delete
-              </button>
+              🎂 ${dobText}
+
+              • 🏏 ${escapeHtml(
+                player.role || "Player"
+              )}
+
+              • ${escapeHtml(
+                player.status || "Unknown"
+              )}
+
+              ${
+                player.seasons
+                  ? ` • 📅 ${escapeHtml(
+                      player.seasons
+                    )}`
+                  : ""
+              }
 
             </div>
 
           </div>
 
-        `;
-      }).join("");
+
+          <div class="row-buttons">
+
+
+            <button
+              class="secondary small-button"
+              onclick="editPlayer(
+                ${originalIndex},
+                ${sheetRowNumber}
+              )"
+            >
+              ✏️ Edit
+            </button>
+
+
+            <button
+              class="danger small-button"
+              onclick="deletePlayer(
+                ${originalIndex}
+              )"
+            >
+              🗑️ Delete
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+
+/*
+ * EDIT PLAYER
+ */
+
+function editPlayer(
+  index,
+  rowNumber
+) {
+
+  const player =
+    players[index];
+
+
+  if (!player) {
+    return;
   }
 
-  function escapeHtml(value) {
 
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
+  /*
+   * Save the real Google Sheet row.
+   */
 
-  function editPlayer(index) {
+  document.getElementById(
+    "editRowNumber"
+  ).value =
+    rowNumber;
 
-    const player =
-      players[index];
 
-    if (!player) return;
+  document.getElementById(
+    "playerName"
+  ).value =
+    player.name || "";
 
-    document.getElementById("editIndex").value =
-      index;
 
-    document.getElementById("playerName").value =
-      player.name || "";
+  document.getElementById(
+    "dob"
+  ).value =
+    player.dob || "";
 
-    document.getElementById("dob").value =
-      player.dob || "";
 
-    document.getElementById("status").value =
-      player.status === "former"
-        ? "Former"
-        : "Current";
+  document.getElementById(
+    "status"
+  ).value =
+    player.status === "former"
+      ? "Former"
+      : "Current";
 
-    document.getElementById("role").value =
-      player.role || "Batter";
 
-    document.getElementById("seasons").value =
-      player.seasons || "";
+  document.getElementById(
+    "role"
+  ).value =
+    player.role || "Batter";
 
-    document.getElementById("photoUrl").value =
-      player.photoUrl || "";
 
-    /*
-     * Reminder is not returned by the public API.
-     * Keep the current default when editing.
-     */
-    document.getElementById("reminder").value =
-      "ON";
+  document.getElementById(
+    "seasons"
+  ).value =
+    player.seasons || "";
 
-    saveButton.textContent =
-      "💾 Update Player";
 
-    cancelButton.style.display =
-      "inline-block";
+  /*
+   * The current public doGet()
+   * does not return the Reminder column.
+   *
+   * We keep ON here for now.
+   */
 
-    clearStatus();
+  document.getElementById(
+    "reminder"
+  ).value =
+    "ON";
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
 
-  function resetForm() {
+  document.getElementById(
+    "photoUrl"
+  ).value =
+    player.photoUrl || "";
 
-    form.reset();
 
-    document.getElementById("editIndex").value =
-      "";
+  saveButton.textContent =
+    "💾 Update Player";
 
-    document.getElementById("status").value =
-      "Current";
 
-    document.getElementById("role").value =
-      "Batter";
+  cancelButton.style.display =
+    "inline-block";
 
-    document.getElementById("reminder").value =
-      "ON";
 
-    saveButton.textContent =
-      "➕ Add Player";
+  clearStatus();
 
-    cancelButton.style.display =
-      "none";
 
-    clearStatus();
-  }
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
-  async function addPlayerToSheet(player) {
+}
 
-    const response =
-      await fetch(DATA_URL, {
+
+
+/*
+ * RESET FORM
+ */
+
+function resetForm() {
+
+  form.reset();
+
+
+  document.getElementById(
+    "editRowNumber"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "status"
+  ).value =
+    "Current";
+
+
+  document.getElementById(
+    "role"
+  ).value =
+    "Batter";
+
+
+  document.getElementById(
+    "reminder"
+  ).value =
+    "ON";
+
+
+  saveButton.textContent =
+    "➕ Add Player";
+
+
+  cancelButton.style.display =
+    "none";
+
+
+  clearStatus();
+
+}
+
+
+
+/*
+ * SEND POST REQUEST
+ */
+
+async function sendRequest(
+  payload
+) {
+
+  const response =
+    await fetch(
+      DATA_URL,
+      {
         method: "POST",
+
         headers: {
-          "Content-Type": "text/plain;charset=utf-8"
+          "Content-Type":
+            "text/plain;charset=utf-8"
         },
-        body: JSON.stringify({
-          action: "addPlayer",
-          player: player
-        })
-      });
 
-    const result =
-      await response.json();
+        body:
+          JSON.stringify(payload)
+      }
+    );
 
-    if (!result.success) {
-      throw new Error(
-        result.message || "Unable to add player"
+
+  const result =
+    await response.json();
+
+
+  if (!result.success) {
+
+    throw new Error(
+      result.message ||
+      "Request failed"
+    );
+
+  }
+
+
+  return result;
+
+}
+
+
+
+/*
+ * ADD / UPDATE PLAYER
+ */
+
+form.addEventListener(
+  "submit",
+  async function(event) {
+
+    event.preventDefault();
+
+
+    clearStatus();
+
+
+    const rowNumber =
+      document.getElementById(
+        "editRowNumber"
+      ).value;
+
+
+    const player = {
+
+      name:
+        document.getElementById(
+          "playerName"
+        ).value.trim(),
+
+      dob:
+        document.getElementById(
+          "dob"
+        ).value,
+
+      status:
+        document.getElementById(
+          "status"
+        ).value,
+
+      role:
+        document.getElementById(
+          "role"
+        ).value,
+
+      seasons:
+        document.getElementById(
+          "seasons"
+        ).value.trim(),
+
+      reminder:
+        document.getElementById(
+          "reminder"
+        ).value,
+
+      photoUrl:
+        document.getElementById(
+          "photoUrl"
+        ).value.trim()
+
+    };
+
+
+    if (!player.name) {
+
+      showStatus(
+        "Please enter the player name.",
+        "error"
       );
+
+      return;
+
     }
 
-    return result;
-  }
 
-  form.addEventListener(
-    "submit",
-    async function(event) {
+    saveButton.disabled =
+      true;
 
-      event.preventDefault();
 
-      clearStatus();
+    try {
 
-      const editIndex =
-        document.getElementById("editIndex").value;
 
-      if (editIndex !== "") {
+      /*
+       * EDIT MODE
+       */
 
-        showStatus(
-          "Edit will be connected after Add Player is verified.",
-          "error"
-        );
+      if (rowNumber) {
 
-        return;
-      }
+        saveButton.textContent =
+          "Updating...";
 
-      const player = {
 
-        name:
-          document.getElementById("playerName").value.trim(),
+        await sendRequest({
 
-        dob:
-          document.getElementById("dob").value,
+          action:
+            "updatePlayer",
 
-        status:
-          document.getElementById("status").value,
+          rowNumber:
+            Number(rowNumber),
 
-        role:
-          document.getElementById("role").value,
+          player:
+            player
 
-        seasons:
-          document.getElementById("seasons").value.trim(),
+        });
 
-        reminder:
-          document.getElementById("reminder").value,
-
-        photoUrl:
-          document.getElementById("photoUrl").value.trim()
-      };
-
-      if (!player.name) {
 
         showStatus(
-          "Please enter the player name.",
-          "error"
-        );
-
-        return;
-      }
-
-      saveButton.disabled = true;
-      saveButton.textContent = "Saving...";
-
-      try {
-
-        await addPlayerToSheet(player);
-
-        showStatus(
-          `${player.name} was added successfully to Google Sheets.`,
+          `${player.name} was updated successfully.`,
           "success"
         );
 
-        resetForm();
+      }
 
-        await loadPlayers();
 
-      } catch (error) {
+      /*
+       * ADD MODE
+       */
 
-        console.error(error);
+      else {
+
+        saveButton.textContent =
+          "Saving...";
+
+
+        await sendRequest({
+
+          action:
+            "addPlayer",
+
+          player:
+            player
+
+        });
+
 
         showStatus(
-          "Unable to add the player yet. We need to finish the Apps Script POST connection first.",
-          "error"
+          `${player.name} was added successfully.`,
+          "success"
         );
 
-      } finally {
-
-        saveButton.disabled = false;
-
-        if (
-          document.getElementById("editIndex").value === ""
-        ) {
-          saveButton.textContent = "➕ Add Player";
-        }
       }
+
+
+      resetForm();
+
+
+      await loadPlayers();
+
+
     }
-  );
 
-  function deletePlayer(index) {
+    catch (error) {
 
-    const player =
-      players[index];
+      console.error(error);
 
-    if (!player) return;
 
-    showStatus(
-      `Delete for ${player.name} will be connected after Add Player is verified.`,
-      "error"
-    );
+      showStatus(
+        error.message ||
+        "Unable to save the player.",
+        "error"
+      );
+
+
+      saveButton.textContent =
+        rowNumber
+          ? "💾 Update Player"
+          : "➕ Add Player";
+
+    }
+
+
+    finally {
+
+      saveButton.disabled =
+        false;
+
+    }
+
+  }
+);
+
+
+
+/*
+ * DELETE
+ *
+ * We will connect this after
+ * Edit has been successfully tested.
+ */
+
+function deletePlayer(index) {
+
+  const player =
+    players[index];
+
+
+  if (!player) {
+    return;
   }
 
-  cancelButton.addEventListener(
-    "click",
-    resetForm
+
+  showStatus(
+    `Delete is not connected yet. ${player.name} has not been deleted.`,
+    "error"
   );
 
-  search.addEventListener(
-    "input",
-    renderPlayers
-  );
+}
 
-  loadPlayers();
+
+
+/*
+ * CANCEL EDIT
+ */
+
+cancelButton.addEventListener(
+  "click",
+  resetForm
+);
+
+
+
+/*
+ * SEARCH
+ */
+
+search.addEventListener(
+  "input",
+  renderPlayers
+);
+
+
+
+/*
+ * START
+ */
+
+loadPlayers();
 
 </script>
 
