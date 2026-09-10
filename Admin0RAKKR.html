@@ -733,7 +733,77 @@
 
 
 <body>
+<div id="loginScreen" style="
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #09050f;
+">
+  <div style="
+    width: 100%;
+    max-width: 400px;
+    margin: 20px;
+    padding: 30px;
+    border-radius: 20px;
+    background: #1b0d2b;
+    border: 1px solid rgba(244,208,111,0.25);
+    text-align: center;
+  ">
+    <h2 style="color:#f4d06f; margin-bottom:10px;">
+      KKR Birthday Hub
+    </h2>
 
+    <p style="color:#bdb3c8; margin-bottom:25px;">
+      Admin Login
+    </p>
+
+    <input
+      id="adminPassword"
+      type="password"
+      placeholder="Enter admin password"
+      style="
+        width:100%;
+        padding:13px;
+        border-radius:10px;
+        border:1px solid rgba(255,255,255,0.14);
+        background:#261536;
+        color:white;
+        margin-bottom:15px;
+      "
+    >
+
+    <button
+      id="loginButton"
+      style="
+        width:100%;
+        padding:13px;
+        border:0;
+        border-radius:10px;
+        background:#f4d06f;
+        color:#251039;
+        font-weight:700;
+        cursor:pointer;
+      "
+    >
+      Login
+    </button>
+
+    <p
+      id="loginError"
+      style="
+        display:none;
+        margin-top:15px;
+        color:#ff9eaa;
+        font-size:13px;
+      "
+    >
+      Incorrect password.
+    </p>
+  </div>
+</div>
 
 <div class="container">
 
@@ -2859,7 +2929,30 @@ eventSearch.addEventListener(
 /* =========================================================
    INITIAL LOAD
 ========================================================= */
+const ADMIN_PASSWORD = "KKR_ADMIN_2026";
 
+document.getElementById("loginButton").addEventListener("click", function () {
+
+  const password =
+    document.getElementById("adminPassword").value;
+
+  const loginScreen =
+    document.getElementById("loginScreen");
+
+  const loginError =
+    document.getElementById("loginError");
+
+  if (password === ADMIN_PASSWORD) {
+
+    loginScreen.style.display = "none";
+
+  } else {
+
+    loginError.style.display = "block";
+
+  }
+
+});
 
 loadData();
 
