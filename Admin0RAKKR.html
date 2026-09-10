@@ -12,7 +12,6 @@
 
   <title>KKR Birthday Hub — Admin</title>
 
-
   <style>
 
     * {
@@ -626,27 +625,6 @@
     }
 
 
-    .section-divider {
-
-      margin:
-        10px
-        0
-        30px;
-
-      border:
-        0;
-
-      border-top:
-        1px solid
-        rgba(
-          255,
-          255,
-          255,
-          0.08
-        );
-    }
-
-
     .badge {
 
       display:
@@ -1247,6 +1225,7 @@ const DATA_URL =
   "https://script.google.com/macros/s/AKfycbyc7nxx7Ewdj2uxtwu5EBbhv50EZO9wkVifCJZ6MIYDW07eosYq2RqOYKiCRcOqoOJM/exec";
 
 
+
 /* =========================================================
    DATA
 ========================================================= */
@@ -1255,6 +1234,7 @@ const DATA_URL =
 let players = [];
 
 let onThisDayEvents = [];
+
 
 
 /* =========================================================
@@ -1298,6 +1278,7 @@ const statusMessage =
   );
 
 
+
 /* =========================================================
    EVENT ELEMENTS
 ========================================================= */
@@ -1339,6 +1320,7 @@ const eventStatusMessage =
   );
 
 
+
 /* =========================================================
    LOAD ALL DATA
 ========================================================= */
@@ -1365,16 +1347,6 @@ async function loadData() {
       await response.json();
 
 
-    /*
-      Apps Script now returns:
-
-      {
-        players: [],
-        onThisDay: []
-      }
-    */
-
-
     players =
       data.players || [];
 
@@ -1388,6 +1360,7 @@ async function loadData() {
     renderOnThisDayEvents();
 
   }
+
 
   catch (error) {
 
@@ -1412,6 +1385,7 @@ async function loadData() {
   }
 
 }
+
 
 
 /* =========================================================
@@ -1469,6 +1443,7 @@ function clearEventStatus() {
 }
 
 
+
 /* =========================================================
    ESCAPE HTML
 ========================================================= */
@@ -1504,6 +1479,7 @@ function escapeHtml(value) {
     );
 
 }
+
 
 
 /* =========================================================
@@ -1555,12 +1531,6 @@ function renderPlayers() {
             player
           );
 
-
-        /*
-          Row 1 = header
-          Therefore array index + 2
-          = Google Sheet row.
-        */
 
         const sheetRowNumber =
           originalIndex + 2;
@@ -1681,6 +1651,7 @@ function renderPlayers() {
 }
 
 
+
 /* =========================================================
    EDIT PLAYER
 ========================================================= */
@@ -1781,6 +1752,7 @@ function editPlayer(
 }
 
 
+
 /* =========================================================
    RESET PLAYER FORM
 ========================================================= */
@@ -1826,6 +1798,7 @@ function resetForm() {
   clearStatus();
 
 }
+
 
 
 /* =========================================================
@@ -1877,6 +1850,7 @@ async function sendRequest(
   return result;
 
 }
+
 
 
 /* =========================================================
@@ -2055,6 +2029,7 @@ form.addEventListener(
 );
 
 
+
 /* =========================================================
    DELETE PLAYER
 ========================================================= */
@@ -2148,6 +2123,7 @@ async function deletePlayer(
 }
 
 
+
 /* =========================================================
    ON THIS DAY LIST
 ========================================================= */
@@ -2165,9 +2141,15 @@ function renderOnThisDayEvents() {
     onThisDayEvents.filter(
       event => {
 
+        const eventDate =
+          String(event.day || "").padStart(2, "0") +
+          "/" +
+          String(event.month || "").padStart(2, "0");
+
+
         const text =
           [
-            event.date,
+            eventDate,
             event.year,
             event.event,
             event.description
@@ -2209,14 +2191,16 @@ function renderOnThisDayEvents() {
           );
 
 
-        /*
-          Row 1 = header
-          Therefore array index + 2
-          = Google Sheet row.
-        */
-
         const sheetRowNumber =
           originalIndex + 2;
+
+
+        const eventDate =
+          String(event.day || "")
+            .padStart(2, "0") +
+          "/" +
+          String(event.month || "")
+            .padStart(2, "0");
 
 
         const reminder =
@@ -2247,8 +2231,7 @@ function renderOnThisDayEvents() {
 
                 Date:
                 ${escapeHtml(
-                  event.date ||
-                  ""
+                  eventDate
                 )}
 
                 ${
@@ -2340,9 +2323,11 @@ function renderOnThisDayEvents() {
 }
 
 
+
 /* =========================================================
    EDIT ON THIS DAY EVENT
 ========================================================= */
+
 
 function editOnThisDayEvent(
   index,
@@ -2359,77 +2344,24 @@ function editOnThisDayEvent(
 
 
   /*
-    Convert the date into DD/MM format.
-
-    Apps Script may return the Sheet
-    date as either text or a Date value.
+    Apps Script returns the On This Day
+    date as separate day and month values.
   */
 
-  let eventDate = event.date || "";
-
-
-  if (
-    eventDate &&
-    !isNaN(
-      new Date(eventDate).getTime()
-    )
-  ) {
-
-    const dateObject =
-      new Date(eventDate);
-
-
-    const day =
-      String(
-        dateObject.getDate()
-      ).padStart(2, "0");
-
-
-    const month =
-      String(
-        dateObject.getMonth() + 1
-      ).padStart(2, "0");
-
-
-    eventDate =
-      day + "/" + month;
-
-  }
-
-
-  /*
-    If the value is already DD/MM,
-    keep it as it is.
-  */
-
-  else {
-
-    const parts =
-      String(eventDate)
-        .trim()
-        .split("/");
-
-
-    if (parts.length >= 2) {
-
-      eventDate =
-        String(
-          parseInt(
-            parts[0],
-            10
-          )
-        ).padStart(2, "0") +
-        "/" +
-        String(
-          parseInt(
-            parts[1],
-            10
-          )
-        ).padStart(2, "0");
-
-    }
-
-  }
+  const eventDate =
+    String(
+      event.day || ""
+    ).padStart(
+      2,
+      "0"
+    ) +
+    "/" +
+    String(
+      event.month || ""
+    ).padStart(
+      2,
+      "0"
+    );
 
 
   document.getElementById(
@@ -2534,6 +2466,7 @@ function resetEventForm() {
   clearEventStatus();
 
 }
+
 
 
 /* =========================================================
@@ -2646,7 +2579,9 @@ eventForm.addEventListener(
     }
 
 
-    if (!/^\d{2}\/\d{2}$/.test(date)) {
+    if (
+      !/^\d{2}\/\d{2}$/.test(date)
+    ) {
 
       showEventStatus(
         "Please enter the date in DD/MM format, for example 27/05.",
@@ -2796,6 +2731,7 @@ eventForm.addEventListener(
 );
 
 
+
 /* =========================================================
    DELETE ON THIS DAY EVENT
 ========================================================= */
@@ -2889,6 +2825,7 @@ async function deleteOnThisDayEvent(
 }
 
 
+
 /* =========================================================
    BUTTONS / SEARCH
 ========================================================= */
@@ -2916,6 +2853,7 @@ eventSearch.addEventListener(
   "input",
   renderOnThisDayEvents
 );
+
 
 
 /* =========================================================
