@@ -1756,7 +1756,7 @@ function editPlayer(
   document.getElementById(
     "dob"
   ).value =
-    player.dob || "";
+    formatDateForInput(player.dob);
 
 
   document.getElementById(
@@ -1924,6 +1924,42 @@ async function sendRequest(
 
 
 /* =========================================================
+   DATE FORMAT HELPERS
+========================================================= */
+
+// Convert HTML date input (YYYY-MM-DD) to DD/MM/YYYY for Google Sheets
+function formatDateForSheet(dateValue) {
+  if (!dateValue) return "";
+
+  const parts = String(dateValue).split("-");
+
+  if (parts.length !== 3) return dateValue;
+
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+// Convert Google Sheets DD/MM/YYYY back to HTML date input YYYY-MM-DD
+function formatDateForInput(dateValue) {
+  if (!dateValue) return "";
+
+  const value = String(dateValue).trim();
+
+  // Already in YYYY-MM-DD format
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value;
+  }
+
+  const parts = value.split("/");
+
+  if (parts.length === 3) {
+    return `${parts[2]}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}`;
+  }
+
+  return "";
+}
+
+
+/* =========================================================
    SAVE PLAYER
 ========================================================= */
 
@@ -1952,9 +1988,9 @@ form.addEventListener(
         ).value.trim(),
 
       dob:
-        document.getElementById(
-          "dob"
-        ).value,
+        formatDateForSheet(
+          document.getElementById("dob").value
+        ),
 
       status:
         document.getElementById(
